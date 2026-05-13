@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI FD – Team 2</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ========== HEADER BAR ========== -->
+  <header class="app-header">
+    <div class="header-left">
+      <span class="header-icon" aria-hidden="true">🤖</span>
+      <h1 class="header-title">AI FD – Team 2</h1>
+    </div>
+    <div class="header-right">
+      <label for="personSelect" class="dropdown-label">Select Profile:</label>
+     
+      <!-- AFTER -->
+      <select id="personSelect"
+              class="dropdown-select"
+              aria-label="Select a team member profile"
+              aria-controls="profileImage profileText mdNotes mdLinks mdNetwork mdActions mdQuestions md433"
+              role="listbox">
+
+        <option value="" disabled selected>— Choose a team member —</option>
+        <option value="gaurav">Gaurav C</option>
+        <option value="soundar">Soundar V</option>
+        <option value="partia">Partia H</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- ========== MAIN CONTENT AREA ========== -->
+  <main class="app-main">
+
+    <!-- ———— LEFT COLUMN: Image + Profile ———— -->
+    <aside class="left-column">
+
+      <!-- Section: Profile Image -->
+     <!-- Section: Profile Image -->
+     
+ <section class="card image-card" aria-label="Profile Image">
+        <div class="section-title-bar">
+         <!-- <span class="section-title-icon" aria-hidden="true">🖼️</span>--> 
+          <h3 class="section-title">Team Member</h3>
+        </div>
+        <div class="image-wrapper">
+
+          <!-- ✅ THIS IS THE CRITICAL LINE — ensure id="profileImage" exists -->
+          <img id="profileImage"
+               src=""
+               alt="No profile selected"
+               class="hidden" />
+
+          <p id="imagePlaceholder" class="placeholder-text">
+            No profile selected
+          </p>
+          <span id="profileImageDesc" class="sr-only">
+            <!--No profile photo loaded-->
+          </span>
+        </div>
+      </section>
+
+      <!-- Section: Profile Text -->
+      <section class="card profile-card" aria-label="Profile Details">
+        <div class="section-title-bar">
+          <!--<span class="section-title-icon" aria-hidden="true">👤</span> -->
+          <h3 class="section-title">Profile</h3>
+        </div>
+       
+<div id="profileText"
+           class="profile-text-container"
+           role="region"
+           aria-label="Profile details"
+           aria-live="polite"
+           aria-atomic="true">
+
+          <p class="placeholder-text">
+            Select a team member from the dropdown to load their profile.
+          </p>
+        </div>
+      </section>
+
+    </aside>
+
+    <!-- ———— CENTER PANEL: Markdown Content (6 Categories) ———— -->
+    <section class="center-panel" aria-label="Markdown Content">
+
+      <!-- Panel Title Bar -->
+      <div class="section-title-bar">
+       <!--  <span class="section-title-icon" aria-hidden="true">📄</span> -->
+        <h3 class="section-title">Workspace</h3>
+      </div>
+
+      <!-- Tab Navigation -->
+      <nav class="md-tabs" aria-label="Content Categories">
+        <button class="tab-btn active" data-target="mdNotes" type="button">
+          📝 Notes
+        </button>
+        <button class="tab-btn" data-target="mdLinks" type="button">
+          🔗 Links
+        </button>
+        <button class="tab-btn" data-target="mdNetwork" type="button">
+          🌐 Network
+        </button>
+        <button class="tab-btn" data-target="mdActions" type="button">
+          ✅ Actions
+        </button>
+        <button class="tab-btn" data-target="mdQuestions" type="button">
+          ❓ Questions
+        </button>
+        <button class="tab-btn" data-target="md433" type="button">
+          📊 4-3-3
+        </button>
+      </nav>
+
+      <!-- Tab Content Panels -->
+      <div class="md-content-area">
+
+        <article id="mdNotes" class="md-panel active" aria-label="Notes">
+          <h3 class="panel-heading">Notes</h3>
+          <div class="md-body">
+            <p class="placeholder-text">Select a profile to load notes.</p>
+          </div>
+        </article>
+
+        <article id="mdLinks" class="md-panel" aria-label="Links">
+          <h3 class="panel-heading">Links</h3>
+          <div class="md-body">
+            <p class="placeholder-text">Select a profile to load links.</p>
+          </div>
+        </article>
+
+        <article id="mdNetwork" class="md-panel" aria-label="Network">
+          <h3 class="panel-heading">Network</h3>
+          <div class="md-body">
+            <p class="placeholder-text">Select a profile to load network info.</p>
+          </div>
+        </article>
+
+        <article id="mdActions" class="md-panel" aria-label="Actions">
+          <h3 class="panel-heading">Actions</h3>
+          <div class="md-body">
+            <p class="placeholder-text">Select a profile to load action items.</p>
+          </div>
+        </article>
+
+        <article id="mdQuestions" class="md-panel" aria-label="Questions">
+          <h3 class="panel-heading">Questions / Open Items</h3>
+          <div class="md-body">
+            <p class="placeholder-text">Select a profile to load questions.</p>
+          </div>
+        </article>
+
+        <article id="md433" class="md-panel" aria-label="4-3-3 Framework">
+          <h3 class="panel-heading">4-3-3 Framework</h3>
+          <div class="md-body">
+            <p class="placeholder-text">Select a profile to load 4-3-3 data.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== BOTTOM STRIP: Calculator Link ========== -->
+  <!-- ========== BOTTOM STRIP: Calculator Link ========== -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <div class="footer-title-group">
+        <span class="section-title-icon" aria-hidden="true">🧮</span>
+        <span class="footer-section-label">Tools</span>
+        <span class="footer-divider">|</span>
+      </div>
+   <!--   <a id="vsmCalculatorLink" href="calculator.html" target="_blank" rel="noopener noreferrer" class="footer-calc-link"> -->  
+        <a id="vsmCalculatorLink" href="VSM project/index.html" target="_blank" rel="noopener noreferrer" class="footer-calc-link">
+    
+    🔗 Open VSM Calculator
+      </a>
+      <span class="footer-divider">|</span>
+      <span class="footer-meta">AI FD – Team 2 &copy; 2026 CitiusTech</span>
+    </div>
+  </footer>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script src="js/app.js" defer></script>
+
+</body>
+</html>

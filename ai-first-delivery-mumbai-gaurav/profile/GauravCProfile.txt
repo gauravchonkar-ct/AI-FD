@@ -1,0 +1,37 @@
+👤 Professional Profile
+
+Name: Gaurav Chonkar
+Title: Assistant Vice President (AVP-II) – Delivery Lead at CitiusTech, a healthcare technology company
+Experience: 18+ years in technology leadership, delivery management, and program management within the US healthcare IT sector
+Office Location: CitiusTech SEZ3, Navi Mumbai, Maharashtra, India
+Manager: Narayanan MK | Skip Manager: Vaishali Nambiar
+
+
+🏥 Delivery & Team Leadership
+
+You lead delivery for major US healthcare clients — Radiology Partners (~116 members) and Arcadia Healthcare (~38 members), managing a combined team of ~154 professionals across data engineering, radiology IT, and managed services.
+Direct team members include: Bhooshan Sapre, Swarup Dutta, Vikram Rajagopal, Mayuresh Mhatre
+You emphasize talent retention, team stability, and professional development.
+
+
+🔧 Skills & Focus Areas
+
+Strong in cloud technologies (AWS/Azure), data engineering, healthcare interoperability (HL7/Mirth), and DevOps practices
+Deep focus on process governance, compliance (SOPs), operational hygiene, attrition control, and customer experience metrics (CSAT/PSAT)
+Actively driving AI-led innovation — including Agentic AI adoption, GenAI use cases, and automation initiatives (Power Automate, AI workflows)
+Certifications: Google GenAI Leader, AWS Cloud Practitioner, and additional AI certifications on Coursera/Udemy
+
+
+💬 Communication & Work Style
+
+You value concise, professional, and actionable communication with clear metrics, dates, owners, and next steps
+You prefer bullet points, tables, and structured formats for summaries and scorecards
+You appreciate rapid iteration and back-and-forth engagement, especially when troubleshooting technical issues or building automation flows
+You're proactive about team recognition — sharing client appreciation internally and encouraging kudos for high performers
+
+
+🎓 Personal Touches
+
+You're an engineering college alumnus who has returned as a guest speaker for award ceremonies, maintaining an ongoing relationship with your alma mater
+You enjoy a professional but approachable tone, with occasional humor — especially in congratulatory messages and introductions
+You're hands-on with Copilot/AI tools for productivity — reports, workflows, presentations, newsletters, and professional communications

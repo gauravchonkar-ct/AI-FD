@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <!-- ============================================================
+         META & TITLE
+    ============================================================ -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lightweight local Markdown renderer — no server required">
+    <title>Markdown Renderer</title>
+
+    <!-- ============================================================
+         EMBEDDED STYLES
+    ============================================================ -->
+    <style>
+        /* ══════════════════════════════════════════════════════════
+           CSS CUSTOM PROPERTIES (Design Tokens)
+        ══════════════════════════════════════════════════════════ */
+        :root {
+            --bg-page:        #f8fafc;
+            --bg-card:        #ffffff;
+            --bg-code:        #f1f5f9;
+            --bg-code-block:  #1e293b;
+            --bg-quote:       #eff6ff;
+            --bg-drop:        #ffffff;
+            --bg-drop-hover:  #eff6ff;
+            --bg-table-head:  #f1f5f9;
+            --bg-table-even:  #f8fafc;
+            --bg-toggle:      #ffffff;
+
+            --text-primary:   #1e293b;
+            --text-heading:   #0f172a;
+            --text-muted:     #64748b;
+            --text-faint:     #94a3b8;
+            --text-code-block:#e2e8f0;
+
+            --accent:         #3b82f6;
+            --accent-hover:   #2563eb;
+            --accent-light:   #dbeafe;
+
+            --border:         #e2e8f0;
+            --border-dashed:  #cbd5e1;
+
+            --success-bg:     #f0fdf4;
+            --success-text:   #16a34a;
+            --success-border: #bbf7d0;
+
+            --error-bg:       #fef2f2;
+            --error-text:     #dc2626;
+            --error-border:   #fecaca;
+
+            --warning-bg:     #fffbeb;
+            --warning-text:   #d97706;
+            --warning-border: #fde68a;
+
+            --shadow-sm:      0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md:      0 4px 12px rgba(0,0,0,0.06);
+            --radius:         12px;
+            --radius-sm:      8px;
+            --transition:     0.25s ease;
+
+            /* 🆕 Action status colours */
+            --status-todo-bg:       #fef3c7;
+            --status-todo-text:     #92400e;
+            --status-todo-border:   #fbbf24;
+            --status-progress-bg:   #dbeafe;
+            --status-progress-text: #1e40af;
+            --status-progress-border:#60a5fa;
+            --status-done-bg:       #d1fae5;
+            --status-done-text:     #065f46;
+            --status-done-border:   #34d399;
+            --status-blocked-bg:    #fee2e2;
+            --status-blocked-text:  #991b1b;
+            --status-blocked-border:#f87171;
+
+            /* 🆕 Link card colours */
+            --link-card-bg:         #f8fafc;
+            --link-card-hover:      #eff6ff;
+            --link-external:        #7c3aed;
+            --link-anchor:          #0891b2;
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           DARK THEME
+        ══════════════════════════════════════════════════════════ */
+        [data-theme="dark"] {
+            --bg-page:        #0f172a;
+            --bg-card:        #1e293b;
+            --bg-code:        #334155;
+            --bg-code-block:  #0f172a;
+            --bg-quote:       #1e3a5f;
+            --bg-drop:        #1e293b;
+            --bg-drop-hover:  #1e3a5f;
+            --bg-table-head:  #334155;
+            --bg-table-even:  #1e293b;
+            --bg-toggle:      #334155;
+
+            --text-primary:   #e2e8f0;
+            --text-heading:   #f1f5f9;
+            --text-muted:     #94a3b8;
+            --text-faint:     #64748b;
+            --text-code-block:#e2e8f0;
+
+            --accent:         #60a5fa;
+            --accent-hover:   #93bbfd;
+            --accent-light:   #1e3a5f;
+
+            --border:         #334155;
+            --border-dashed:  #475569;
+
+            --success-bg:     #052e16;
+            --success-text:   #4ade80;
+            --success-border: #166534;
+
+            --error-bg:       #450a0a;
+            --error-text:     #f87171;
+            --error-border:   #991b1b;
+
+            --warning-bg:     #451a03;
+            --warning-text:   #fbbf24;
+            --warning-border: #92400e;
+
+            --status-todo-bg:       #451a03;
+            --status-todo-text:     #fbbf24;
+            --status-todo-border:   #92400e;
+            --status-progress-bg:   #1e3a5f;
+            --status-progress-text: #93bbfd;
+            --status-progress-border:#2563eb;
+            --status-done-bg:       #052e16;
+            --status-done-text:     #4ade80;
+            --status-done-border:   #166534;
+            --status-blocked-bg:    #450a0a;
+            --status-blocked-text:  #f87171;
+            --status-blocked-border:#991b1b;
+
+            --link-card-bg:         #1e293b;
+            --link-card-hover:      #334155;
+            --link-external:        #a78bfa;
+            --link-anchor:          #22d3ee;
+
+            --shadow-sm:      0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md:      0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        /* ---------- Reset & Base ---------- */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-page);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color var(--transition), color var(--transition);
+        }
+
+        .page-wrapper { max-width: 860px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem; flex: 1; }
+
+        /* ---------- Header ---------- */
+        header { text-align: center; margin-bottom: 2rem; position: relative; }
+        header h1 { font-size: 1.75rem; font-weight: 700; color: var(--text-heading); }
+        header p { font-size: 0.95rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+        .kbd-hint { display: inline-block; font-size: 0.75rem; color: var(--text-faint); margin-top: 0.4rem; }
+        .kbd-hint kbd {
+            display: inline-block; padding: 0.1em 0.45em; font-family: inherit; font-size: 0.75rem;
+            font-weight: 600; color: var(--text-muted); background-color: var(--bg-code);
+            border: 1px solid var(--border); border-radius: 4px; box-shadow: 0 1px 0 var(--border);
+        }
+
+        /* ---------- Dark Mode Toggle ---------- */
+        .theme-toggle {
+            position: fixed; top: 1rem; right: 1rem; z-index: 100; width: 44px; height: 44px;
+            border-radius: 50%; border: 1px solid var(--border); background-color: var(--bg-toggle);
+            color: var(--text-primary); font-size: 1.2rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: var(--shadow-md); transition: all var(--transition);
+        }
+        .theme-toggle:hover { transform: scale(1.1); border-color: var(--accent); }
+        .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+        /* ---------- File Input / Drop Zone ---------- */
+        .file-input-area {
+            border: 2px dashed var(--border-dashed); border-radius: var(--radius);
+            background-color: var(--bg-drop); padding: 2rem; text-align: center;
+            transition: all var(--transition); cursor: pointer; margin-bottom: 2rem;
+        }
+        .file-input-area:hover, .file-input-area.drag-over {
+            border-color: var(--accent); background-color: var(--bg-drop-hover);
+            transform: translateY(-1px); box-shadow: var(--shadow-md);
+        }
+        .file-input-area input[type="file"] { display: none; }
+        .file-input-area label { display: block; cursor: pointer; }
+        .file-input-area .icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .file-input-area .primary-text { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+        .file-input-area .secondary-text { font-size: 0.85rem; color: var(--text-faint); margin-top: 0.25rem; }
+        .file-input-area .drag-hint { font-size: 0.8rem; color: var(--text-faint); margin-top: 0.5rem; }
+        #file-name { font-size: 0.9rem; color: var(--accent); font-weight: 500; margin-top: 0.75rem; min-height: 1.4em; }
+        #file-meta { font-size: 0.8rem; color: var(--text-faint); margin-top: 0.25rem; min-height: 1.2em; }
+
+        /* ---------- View Toggle ---------- */
+        .view-toggle { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .view-toggle button {
+            padding: 0.45rem 1.2rem; font-size: 0.85rem; font-weight: 600;
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            background-color: var(--bg-card); color: var(--text-muted);
+            cursor: pointer; transition: all var(--transition);
+        }
+        .view-toggle button:hover { border-color: var(--accent); color: var(--accent); }
+        .view-toggle button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+        .view-toggle button.active { background-color: var(--accent); color: #ffffff; border-color: var(--accent); }
+        .view-toggle.hidden { display: none; }
+
+        /* ══════════════════════════════════════════════════════════
+           CONTENT CONTAINER
+        ══════════════════════════════════════════════════════════ */
+        .section-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            min-height: 120px;
+            box-shadow: var(--shadow-sm);
+            transition: background-color var(--transition), border-color var(--transition);
+            animation: fadeIn 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        #content { min-height: 200px; }
+
+        #content .placeholder {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; min-height: 180px; color: var(--text-faint);
+            font-style: italic; font-size: 0.95rem; gap: 0.5rem;
+        }
+        .placeholder .placeholder-icon { font-size: 3rem; opacity: 0.4; }
+
+        /* ── Headings ───────────────────────────────────────── */
+        #content h1, #content h2, #content h3,
+        #content h4, #content h5, #content h6 {
+            margin-top: 1.5em; margin-bottom: 0.5em; font-weight: 700;
+            line-height: 1.3; color: var(--text-heading); scroll-margin-top: 1rem;
+        }
+        #content h1 { font-size: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.3em; }
+        #content h2 { font-size: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.25em; }
+        #content h3 { font-size: 1.25rem; }
+        #content h4 { font-size: 1.1rem; }
+        #content h5 { font-size: 1rem; }
+        #content h6 { font-size: 0.9rem; color: var(--text-muted); }
+        #content > h1:first-child, #content > h2:first-child, #content > h3:first-child { margin-top: 0; }
+
+        /* ── Prose ──────────────────────────────────────────── */
+        #content p { margin: 0.75em 0; }
+        #content a { color: var(--accent); text-decoration: none; }
+        #content a:hover { text-decoration: underline; color: var(--accent-hover); }
+        #content strong { font-weight: 700; }
+        #content em { font-style: italic; }
+        #content del, #content s { text-decoration: line-through; color: var(--text-muted); }
+
+        /* ── Code ──────────────────────────────────────────── */
+        #content code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.875em; background-color: var(--bg-code);
+            padding: 0.2em 0.4em; border-radius: 4px;
+        }
+        #content pre {
+            background-color: var(--bg-code-block); color: var(--text-code-block);
+            border-radius: var(--radius-sm); padding: 1.25rem 1.5rem;
+            overflow-x: auto; margin: 1.25em 0; border-left: 3px solid var(--accent);
+        }
+        #content pre code { background: none; color: inherit; padding: 0; font-size: 0.85rem; line-height: 1.65; }
+
+        /* ── Blockquotes ───────────────────────────────────── */
+        #content blockquote {
+            border-left: 4px solid var(--accent); background-color: var(--bg-quote);
+            padding: 0.75em 1em; margin: 1em 0; color: var(--text-primary);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+        #content blockquote p { margin: 0.25em 0; }
+
+        /* ── Lists ─────────────────────────────────────────── */
+        #content ul, #content ol { margin: 0.75em 0; padding-left: 1.75em; }
+        #content li { margin: 0.35em 0; }
+        #content input[type="checkbox"] {
+            margin-right: 0.4em; transform: scale(1.15);
+            vertical-align: middle; accent-color: var(--accent);
+        }
+
+        /* ── Tables ────────────────────────────────────────── */
+        #content table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 0.9rem; display: block; overflow-x: auto; }
+        #content th, #content td { border: 1px solid var(--border); padding: 0.6em 0.85em; text-align: left; }
+        #content th { background-color: var(--bg-table-head); font-weight: 600; }
+        #content tr:nth-child(even) { background-color: var(--bg-table-even); }
+
+        /* ── HR / Images ───────────────────────────────────── */
+        #content hr { border: none; border-top: 2px solid var(--border); margin: 2em 0; }
+        #content img { max-width: 100%; height: auto; border-radius: var(--radius-sm); margin: 1em 0; box-shadow: var(--shadow-sm); }
+
+        /* ── Raw view ──────────────────────────────────────── */
+        #content .raw-markdown {
+            white-space: pre-wrap; word-wrap: break-word;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.875rem; line-height: 1.7; color: var(--text-primary);
+            background-color: var(--bg-code); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); padding: 1.25rem; margin: 0;
+        }
+
+        /* ── Status Messages ───────────────────────────────── */
+        .status-msg {
+            text-align: center; padding: 1rem; border-radius: var(--radius-sm);
+            font-size: 0.9rem; font-weight: 500; margin-bottom: 1rem; animation: fadeIn 0.3s ease;
+        }
+        .status-msg.error   { background-color: var(--error-bg);   color: var(--error-text);   border: 1px solid var(--error-border); }
+        .status-msg.success { background-color: var(--success-bg);  color: var(--success-text);  border: 1px solid var(--success-border); }
+        .status-msg.warning { background-color: var(--warning-bg);  color: var(--warning-text);  border: 1px solid var(--warning-border); }
+
+        /* ══════════════════════════════════════════════════════════
+           🆕 SECTION HEADERS — shared by Actions & References
+        ══════════════════════════════════════════════════════════ */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0;
+        }
+
+        .section-header .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
+            height: 24px;
+            padding: 0 0.5em;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 99px;
+            background-color: var(--accent);
+            color: #ffffff;
+        }
+
+        .section-header .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           🆕 SECTION 1: ACTIONS TRACKER
+        ══════════════════════════════════════════════════════════ */
+
+        /* ── Progress Bar ────────────────────────────────────── */
+        .progress-container {
+            width: 100%;
+            margin-bottom: 1.25rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.35rem;
+        }
+
+        .progress-bar-track {
+            width: 100%;
+            height: 10px;
+            background-color: var(--bg-code);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #34d399);
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
+
+        /* ── Filter Tabs ─────────────────────────────────────── */
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-tab {
+            padding: 0.3rem 0.75rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            border-radius: 99px;
+            background-color: var(--bg-card);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .filter-tab:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-tab.active { background-color: var(--accent); color: #fff; border-color: var(--accent); }
+
+        /* ── Action Item Cards ───────────────────────────────── */
+        .action-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background-color: var(--bg-card);
+            transition: all var(--transition);
+            animation: fadeIn 0.2s ease;
+        }
+
+        .action-item:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .action-item.done {
+            opacity: 0.65;
+        }
+
+        .action-item.done .action-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .action-checkbox {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: var(--accent);
+            cursor: pointer;
+            transform: scale(1.2);
+        }
+
+        .action-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .action-text {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .action-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.35rem;
+            flex-wrap: wrap;
+        }
+
+        /* ── Status Dropdown ─────────────────────────────────── */
+        .status-select {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            border-radius: 99px;
+            border: 1.5px solid;
+            cursor: pointer;
+            background-color: transparent;
+            transition: all var(--transition);
+            appearance: auto;
+        }
+
+        .status-select.todo      { color: var(--status-todo-text);     border-color: var(--status-todo-border);     background-color: var(--status-todo-bg); }
+        .status-select.progress  { color: var(--status-progress-text); border-color: var(--status-progress-border); background-color: var(--status-progress-bg); }
+        .status-select.done      { color: var(--status-done-text);     border-color: var(--status-done-border);     background-color: var(--status-done-bg); }
+        .status-select.blocked   { color: var(--status-blocked-text);  border-color: var(--status-blocked-border);  background-color: var(--status-blocked-bg); }
+
+        .action-source-tag {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 99px;
+            background-color: var(--bg-code);
+            color: var(--text-faint);
+        }
+
+        /* ── Empty state ─────────────────────────────────────── */
+        .empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-faint);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        .empty-state .empty-icon { font-size: 2rem; opacity: 0.4; margin-bottom: 0.5rem; }
+
+        /* ══════════════════════════════════════════════════════════
+           🆕 SECTION 2: REFERENCES & LINKS
+        ══════════════════════════════════════════════════════════ */
+        .ref-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .ref-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background-color: var(--link-card-bg);
+            transition: all var(--transition);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .ref-item:hover {
+            background-color: var(--link-card-hover);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+            text-decoration: none;
+        }
+
+        .ref-icon {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .ref-icon.external { background-color: var(--link-external); }
+        .ref-icon.anchor   { background-color: var(--link-anchor); }
+        .ref-icon.mail     { background-color: #ea580c; }
+        .ref-icon.image    { background-color: #16a34a; }
+
+        .ref-body { flex: 1; min-width: 0; }
+
+        .ref-title {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ref-url {
+            font-size: 0.78rem;
+            color: var(--text-faint);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 0.1rem;
+        }
+
+        .ref-type-badge {
+            flex-shrink: 0;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 99px;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            background-color: var(--bg-card);
+        }
+
+        /* ── Category headers inside reference list ──────────── */
+        .ref-category {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-faint);
+            margin-top: 0.75rem;
+            margin-bottom: 0.25rem;
+            padding-left: 0.25rem;
+        }
+
+        .ref-category:first-child { margin-top: 0; }
+
+
+        /* ══════════════════════════════════════════════════════════
+           🆕 SECTION 3: QUERIES / OPEN QUESTIONS
+        ══════════════════════════════════════════════════════════ */
+        .query-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .query-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--query-border);
+            border-radius: var(--radius-sm);
+            background-color: var(--bg-card);
+            transition: all var(--transition);
+            animation: fadeIn 0.2s ease;
+        }
+
+        .query-item:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+            background-color: var(--query-bg);
+        }
+
+        .query-icon {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            background-color: var(--query-icon-bg);
+        }
+
+        .query-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .query-text {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .query-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .query-source-tag {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 99px;
+            background-color: var(--bg-code);
+            color: var(--text-faint);
+        }
+
+        .query-context-tag {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 99px;
+            background-color: var(--query-bg);
+            color: var(--query-border);
+            border: 1px solid var(--query-border);
+            font-weight: 600;
+        }
+
+        .query-status-badge {
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 0.15rem 0.55rem;
+            border-radius: 99px;
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+            border: 1px solid var(--warning-border);
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           SCROLL-TO-TOP
+        ══════════════════════════════════════════════════════════ */
+        .scroll-top {
+            position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 100;
+            width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--border);
+            background-color: var(--bg-card); color: var(--text-primary); font-size: 1.1rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            box-shadow: var(--shadow-md); opacity: 0; visibility: hidden; transition: all var(--transition);
+        }
+        .scroll-top.visible { opacity: 1; visibility: visible; }
+        .scroll-top:hover { transform: translateY(-2px); border-color: var(--accent); }
+        .scroll-top:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+        /* ── Footer ────────────────────────────────────────── */
+        footer {
+            display: flex; justify-content: center; align-items: center;
+            padding: 1.25rem 0; font-size: 0.8rem;
+            color: var(--text-faint); border-top: 1px solid var(--border);
+            margin-top: 2rem; transition: all var(--transition);
+            position: relative;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        .version-info {
+            position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+            font-size: 0.75rem; color: var(--text-faint);
+            background-color: var(--bg-card); padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm); border: 1px solid var(--border);
+        }
+
+        /* ── Focus Visible ─────────────────────────────────── */
+        :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+        /* ── Print ─────────────────────────────────────────── */
+        @media print {
+            .theme-toggle, .file-input-area, .view-toggle,
+            .scroll-top, footer, .status-msg, .filter-tabs,
+            .header-controls, .status-select, .version-info { display: none !important; }
+            .section-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+            body { background: #fff; color: #000; }
+        }
+
+        /* ── Responsive ────────────────────────────────────── */
+        @media (max-width: 600px) {
+            .page-wrapper { padding: 1rem; }
+            .section-card { padding: 1.25rem; }
+            header h1 { font-size: 1.4rem; }
+            .section-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Dark Mode Toggle -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode (Ctrl+Shift+D)">🌙</button>
+
+    <!-- Scroll-to-Top -->
+    <button class="scroll-top" id="scroll-top" aria-label="Scroll to top" title="Scroll to top">⬆</button>
+
+    <div class="page-wrapper">
+
+        <!-- HEADER -->
+        <header>
+            <h1>📝 Markdown Renderer</h1>
+            <p>Select a <strong>.md</strong> file to preview it as formatted HTML</p>
+            <div class="kbd-hint">
+                <kbd>Ctrl</kbd>+<kbd>O</kbd> open file &nbsp;·&nbsp;
+                <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd> dark mode
+            </div>
+        </header>
+
+        <!-- FILE INPUT / DROP ZONE -->
+        <section class="file-input-area" id="drop-zone" role="button" tabindex="0"
+                 aria-label="Click or drag a Markdown file here to load it">
+            <label for="md-file-input">
+                <div class="icon">📂</div>
+                <div class="primary-text">Click to select a Markdown file</div>
+                <div class="secondary-text">Supports .md and .markdown files</div>
+                <div class="drag-hint">— or drag &amp; drop a file here —</div>
+            </label>
+            <input type="file" id="md-file-input" accept=".md,.markdown" aria-label="Select Markdown file">
+            <div id="file-name"></div>
+            <div id="file-meta"></div>
+        </section>
+
+        <!-- VIEW TOGGLE -->
+        <div class="view-toggle hidden" id="view-toggle" role="tablist">
+            <button id="btn-rendered" class="active" role="tab" aria-selected="true">🌐 Rendered</button>
+            <button id="btn-raw" role="tab" aria-selected="false">📄 Raw Markdown</button>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════
+             SECTION: RENDERED CONTENT
+        ═══════════════════════════════════════════════════════ -->
+        <article id="content" class="section-card" role="main" aria-live="polite">
+            <div class="placeholder">
+                <div class="placeholder-icon">📑</div>
+                <span>Your rendered Markdown will appear here&hellip;</span>
+                <span style="font-size:0.82rem">Select or drop a .md file above to get started</span>
+            </div>
+        </article>
+
+        <!-- ═══════════════════════════════════════════════════════
+             🆕 SECTION: ACTIONS TRACKER
+             - Extracts task-list items (- [ ] / - [x]) from the MD
+             - Extracts TODO / ACTION / FIXME keyword lines
+             - Allows status toggling and filtering
+        ═══════════════════════════════════════════════════════ -->
+        <section id="actions-section" class="section-card" style="display:none;" aria-label="Actions Tracker">
+            <div class="section-header">
+                <h2>☑️ Actions Tracker <span class="badge" id="actions-count">0</span></h2>
+                <div class="header-controls">
+                    <button class="filter-tab active" data-filter="all" id="filter-all">All</button>
+                    <button class="filter-tab" data-filter="todo">To Do</button>
+                    <button class="filter-tab" data-filter="progress">In Progress</button>
+                    <button class="filter-tab" data-filter="done">Done</button>
+                    <button class="filter-tab" data-filter="blocked">Blocked</button>
+                </div>
+            </div>
+            <div class="progress-container" id="actions-progress">
+                <div class="progress-label">
+                    <span id="progress-text">0 of 0 complete</span>
+                    <span id="progress-pct">0%</span>
+                </div>
+                <div class="progress-bar-track">
+                    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+                </div>
+            </div>
+            <div class="action-list" id="action-list">
+                <!-- JS injects action items here -->
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+             🆕 SECTION: REFERENCES & LINKS
+             - Extracts all <a href> and <img src> from rendered HTML
+             - Categorises into External, Anchor, Email, Image
+        ═══════════════════════════════════════════════════════ -->
+        <section id="refs-section" class="section-card" style="display:none;" aria-label="References and Links">
+            <div class="section-header">
+                <h2>🔗 References &amp; Links <span class="badge" id="refs-count">0</span></h2>
+            </div>
+            <div class="ref-list" id="ref-list">
+                <!-- JS injects link cards here -->
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+             🆕 SECTION: QUERIES / OPEN QUESTIONS
+             - Extracts question lines (ending with ?)
+             - Extracts Q: / Question: / Query: / TBD: / PENDING: keyword lines
+             - Shows section context (parent heading)
+        ═══════════════════════════════════════════════════════ -->
+        <section id="queries-section" class="section-card" style="display:none;" aria-label="Queries and Open Questions">
+            <div class="section-header">
+                <h2>❓ Queries / Open Questions <span class="badge" id="queries-count">0</span></h2>
+            </div>
+            <div class="query-list" id="query-list">
+                <!-- JS injects query cards here -->
+            </div>
+        </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        Markdown Renderer &mdash; Powered by
+        <a href="https://github.com/markedjs/marked" target="_blank" rel="noopener">marked.js</a> +
+        <a href="https://github.com/cure53/DOMPurify" target="_blank" rel="noopener">DOMPurify</a>
+        &bull; No server required
+        <div class="version-info">v1.1.0</div>
+    </footer>
+
+    <!-- EXTERNAL LIBRARIES -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+
+    <!-- ============================================================
+         APPLICATION JAVASCRIPT
+    ============================================================ -->
+    <script>
+    (function () {
+        "use strict";
+
+        /* ── DOM References ──────────────────────────────────── */
+        var fileInput    = document.getElementById("md-file-input");
+        var fileNameDiv  = document.getElementById("file-name");
+        var fileMetaDiv  = document.getElementById("file-meta");
+        var contentEl    = document.getElementById("content");
+        var viewToggle   = document.getElementById("view-toggle");
+        var btnRendered  = document.getElementById("btn-rendered");
+        var btnRaw       = document.getElementById("btn-raw");
+        var themeToggle  = document.getElementById("theme-toggle");
+        var scrollTopBtn = document.getElementById("scroll-top");
+        var dropZone     = document.getElementById("drop-zone");
+
+        /* 🆕 Actions section refs */
+        var actionsSection  = document.getElementById("actions-section");
+        var actionList      = document.getElementById("action-list");
+        var actionsCountEl  = document.getElementById("actions-count");
+        var progressText    = document.getElementById("progress-text");
+        var progressPct     = document.getElementById("progress-pct");
+        var progressFill    = document.getElementById("progress-fill");
+
+        /* 🆕 References section refs */
+        var refsSection     = document.getElementById("refs-section");
+        var refList         = document.getElementById("ref-list");
+        var refsCountEl     = document.getElementById("refs-count");
+
+        /* 🆕 Queries section refs */
+        var queriesSection  = document.getElementById("queries-section");
+        var queryList       = document.getElementById("query-list");
+        var queriesCountEl  = document.getElementById("queries-count");
+
+        /* ── State ───────────────────────────────────────────── */
+        var currentRenderedHTML = "";
+        var currentRawText     = "";
+        var actionsData        = [];       /* 🆕 array of action objects */
+        var currentFilter      = "all";
+        var ALLOWED_EXT        = [".md", ".markdown"];
+
+        /* ── marked.js config ────────────────────────────────── */
+        marked.setOptions({ gfm: true, breaks: true });
+
+        /* ══════════════════════════════════════════════════════
+           HELPERS
+        ══════════════════════════════════════════════════════ */
+        function showStatus(message, type) {
+            contentEl.innerHTML = '<div class="status-msg ' + type + '">' + message + "</div>";
+            viewToggle.classList.add("hidden");
+            actionsSection.style.display = "none";
+            refsSection.style.display = "none";
+            queriesSection.style.display = "none";
+        }
+
+        function isValidMarkdownFile(n) {
+            var l = n.toLowerCase();
+            return ALLOWED_EXT.some(function (e) { return l.endsWith(e); });
+        }
+
+        function escapeHTML(t) {
+            return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        }
+
+        function readingTime(t) {
+            var w = t.trim().split(/\s+/).length;
+            return w + " words · " + Math.max(1, Math.round(w / 200)) + " min read";
+        }
+
+        function formatSize(b) {
+            return b < 1024 ? b + " B" : (b / 1024).toFixed(1) + " KB";
+        }
+
+        /* ══════════════════════════════════════════════════════
+           CORE: MARKDOWN → HTML
+        ══════════════════════════════════════════════════════ */
+        function convertMarkdownToHTML(raw) {
+            var unsafe = marked.parse(raw);
+            return DOMPurify.sanitize(unsafe, {
+                ALLOWED_TAGS: [
+                    "h1","h2","h3","h4","h5","h6","p","br","hr",
+                    "strong","em","del","s","a","img",
+                    "ul","ol","li","blockquote","pre","code",
+                    "table","thead","tbody","tr","th","td",
+                    "input","div","span","sup","sub"
+                ],
+                ALLOWED_ATTR: [
+                    "href","src","alt","title","target",
+                    "class","type","checked","disabled"
+                ],
+                ADD_ATTR: ["target"]
+            });
+        }
+
+        /* ── View toggle ─────────────────────────────────────── */
+        function showRendered() {
+            contentEl.innerHTML = currentRenderedHTML;
+            btnRendered.classList.add("active");   btnRaw.classList.remove("active");
+            btnRendered.setAttribute("aria-selected","true"); btnRaw.setAttribute("aria-selected","false");
+        }
+        function showRaw() {
+            contentEl.innerHTML = '<pre class="raw-markdown">' + escapeHTML(currentRawText) + "</pre>";
+            btnRaw.classList.add("active"); btnRendered.classList.remove("active");
+            btnRaw.setAttribute("aria-selected","true"); btnRendered.setAttribute("aria-selected","false");
+        }
+        btnRendered.addEventListener("click", showRendered);
+        btnRaw.addEventListener("click", showRaw);
+
+        /* ══════════════════════════════════════════════════════
+           🆕 ACTIONS TRACKER — extraction + rendering
+        ══════════════════════════════════════════════════════ */
+
+        /**
+         * Extract actions from raw Markdown text.
+         * Sources:
+         *   1. GFM task-list items:  - [ ] text  /  - [x] text
+         *   2. Keyword lines:  TODO: / ACTION: / FIXME: / HACK:
+         */
+        function extractActions(rawText) {
+            var actions = [];
+            var lines   = rawText.split("\n");
+            var id      = 0;
+
+            /* Regex for GFM task items */
+            var taskRe = /^(\s*[-*+]\s*)\[([ xX])\]\s+(.+)$/;
+
+            /* Regex for keyword-based actions */
+            var kwRe   = /\b(TODO|ACTION|FIXME|HACK)\b[:\s]+(.+)/i;
+
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i];
+                var tm   = line.match(taskRe);
+
+                if (tm) {
+                    actions.push({
+                        id:     id++,
+                        text:   tm[3].trim(),
+                        done:   tm[2] !== " ",
+                        status: tm[2] !== " " ? "done" : "todo",
+                        source: "task-list",
+                        line:   i + 1
+                    });
+                    continue;                   /* don't double-match */
+                }
+
+                var km = line.match(kwRe);
+                if (km) {
+                    actions.push({
+                        id:     id++,
+                        text:   km[2].trim(),
+                        done:   false,
+                        status: "todo",
+                        source: km[1].toUpperCase(),
+                        line:   i + 1
+                    });
+                }
+            }
+            return actions;
+        }
+
+        /** Re-render the action list based on current filter */
+        function renderActions() {
+            var filtered = actionsData;
+            if (currentFilter !== "all") {
+                filtered = actionsData.filter(function (a) { return a.status === currentFilter; });
+            }
+
+            if (filtered.length === 0) {
+                actionList.innerHTML =
+                    '<div class="empty-state"><div class="empty-icon">📋</div>' +
+                    (actionsData.length === 0
+                        ? "No actions found in this file.<br><small>Use <code>- [ ]</code> task lists or <code>TODO:</code> keywords.</small>"
+                        : "No actions match this filter.") +
+                    "</div>";
+            } else {
+                var html = "";
+                for (var i = 0; i < filtered.length; i++) {
+                    var a = filtered[i];
+                    html += '<div class="action-item ' + (a.status === "done" ? "done" : "") +
+                            '" data-id="' + a.id + '">' +
+                            '<input type="checkbox" class="action-checkbox" ' +
+                            (a.status === "done" ? "checked" : "") +
+                            ' aria-label="Mark action complete" data-id="' + a.id + '">' +
+                            '<div class="action-body">' +
+                            '<div class="action-text">' + escapeHTML(a.text) + "</div>" +
+                            '<div class="action-meta">' +
+                            '<select class="status-select ' + a.status + '" data-id="' + a.id + '">' +
+                            '<option value="todo"'     + (a.status==="todo"     ? " selected":"") + '>📌 To Do</option>' +
+                            '<option value="progress"' + (a.status==="progress" ? " selected":"") + '>🔄 In Progress</option>' +
+                            '<option value="done"'     + (a.status==="done"     ? " selected":"") + '>✅ Done</option>' +
+                            '<option value="blocked"'  + (a.status==="blocked"  ? " selected":"") + '>🚫 Blocked</option>' +
+                            "</select>" +
+                            '<span class="action-source-tag">' + a.source + " · L" + a.line + "</span>" +
+                            "</div></div></div>";
+                }
+                actionList.innerHTML = html;
+            }
+            updateProgress();
+        }
+
+        /** Update progress bar based on done count */
+        function updateProgress() {
+            var total = actionsData.length;
+            var done  = actionsData.filter(function (a) { return a.status === "done"; }).length;
+            var pct   = total > 0 ? Math.round((done / total) * 100) : 0;
+
+            progressText.textContent = done + " of " + total + " complete";
+            progressPct.textContent  = pct + "%";
+            progressFill.style.width = pct + "%";
+            actionsCountEl.textContent = total;
+        }
+
+        /** Delegate: checkbox toggle */
+        actionList.addEventListener("change", function (e) {
+            if (e.target.classList.contains("action-checkbox")) {
+                var id = parseInt(e.target.getAttribute("data-id"), 10);
+                var a  = actionsData.find(function (x) { return x.id === id; });
+                if (a) {
+                    a.status = e.target.checked ? "done" : "todo";
+                    a.done   = e.target.checked;
+                    renderActions();
+                }
+            }
+            if (e.target.classList.contains("status-select")) {
+                var id2 = parseInt(e.target.getAttribute("data-id"), 10);
+                var a2  = actionsData.find(function (x) { return x.id === id2; });
+                if (a2) {
+                    a2.status = e.target.value;
+                    a2.done   = e.target.value === "done";
+                    renderActions();
+                }
+            }
+        });
+
+        /** Delegate: status dropdown */
+        actionList.addEventListener("input", function (e) {
+            if (e.target.classList.contains("status-select")) {
+                var id = parseInt(e.target.getAttribute("data-id"), 10);
+                var a  = actionsData.find(function (x) { return x.id === id; });
+                if (a) {
+                    a.status = e.target.value;
+                    a.done   = e.target.value === "done";
+                    renderActions();
+                }
+            }
+        });
+
+        /** Filter tab clicks */
+        var filterTabs = document.querySelectorAll(".filter-tab");
+        for (var ft = 0; ft < filterTabs.length; ft++) {
+            filterTabs[ft].addEventListener("click", function () {
+                for (var j = 0; j < filterTabs.length; j++) filterTabs[j].classList.remove("active");
+                this.classList.add("active");
+                currentFilter = this.getAttribute("data-filter");
+                renderActions();
+            });
+        }
+
+        /* ══════════════════════════════════════════════════════
+           🆕 REFERENCES & LINKS — extraction + rendering
+        ══════════════════════════════════════════════════════ */
+
+        /**
+         * Extract links from raw Markdown.
+         * Catches:  [text](url)  /  <url>  /  bare URLs  /  ![alt](img)
+         */
+        function extractReferences(rawText) {
+            var refs = [];
+            var seen = {};                  /* deduplicate by URL */
+
+            /* 1. Markdown links: [text](url "title") */
+            var mdLink = /\[([^\]]*)\]\(([^)]+)\)/g;
+            var m;
+            while ((m = mdLink.exec(rawText)) !== null) {
+                addRef(refs, seen, m[2].split(/\s/)[0], m[1]);
+            }
+
+            /* 2. Angle-bracket links: <https://...> */
+            var angle = /<(https?:\/\/[^\s>]+)>/g;
+            while ((m = angle.exec(rawText)) !== null) {
+                addRef(refs, seen, m[1], "");
+            }
+
+            /* 3. Bare URLs not already captured */
+            var bare = /(?:^|\s)(https?:\/\/[^\s)<>\]]+)/g;
+            while ((m = bare.exec(rawText)) !== null) {
+                addRef(refs, seen, m[1], "");
+            }
+
+            /* 4. Image refs:  ![alt](src) */
+            var imgRe = /!\[([^\]]*)\]\(([^)]+)\)/g;
+            while ((m = imgRe.exec(rawText)) !== null) {
+                addRef(refs, seen, m[2].split(/\s/)[0], m[1] || "Image", "image");
+            }
+
+            /* 5. Mailto links */
+            var mailRe = /\[([^\]]*)\]\(mailto:([^)]+)\)/g;
+            while ((m = mailRe.exec(rawText)) !== null) {
+                addRef(refs, seen, "mailto:" + m[2], m[1], "mail");
+            }
+
+            return refs;
+        }
+
+        function addRef(refs, seen, url, text, forceType) {
+            url = url.replace(/["']/g, "").trim();
+            if (!url || seen[url]) return;
+            seen[url] = true;
+
+            var type = forceType || classifyUrl(url);
+            refs.push({
+                url:   url,
+                text:  text || url,
+                type:  type,
+                domain: extractDomain(url)
+            });
+        }
+
+        function classifyUrl(url) {
+            if (/^mailto:/i.test(url))         return "mail";
+            if (/^#/.test(url))                return "anchor";
+            if (/\.(png|jpe?g|gif|svg|webp|bmp|ico)/i.test(url)) return "image";
+            return "external";
+        }
+
+        function extractDomain(url) {
+            try {
+                if (/^(#|mailto:)/i.test(url)) return "";
+                var a  = document.createElement("a");
+                a.href = url;
+                return a.hostname || "";
+            } catch (e) { return ""; }
+        }
+
+        function refIcon(type) {
+            switch (type) {
+                case "external": return '<div class="ref-icon external">🌐</div>';
+                case "anchor":   return '<div class="ref-icon anchor">#</div>';
+                case "mail":     return '<div class="ref-icon mail">✉️</div>';
+                case "image":    return '<div class="ref-icon image">🖼️</div>';
+                default:         return '<div class="ref-icon external">🔗</div>';
+            }
+        }
+
+        function refTypeName(type) {
+            switch (type) {
+                case "external": return "External";
+                case "anchor":   return "Anchor";
+                case "mail":     return "Email";
+                case "image":    return "Image";
+                default:         return "Link";
+            }
+        }
+
+        function renderReferences(refs) {
+            refsCountEl.textContent = refs.length;
+
+            if (refs.length === 0) {
+                refList.innerHTML =
+                    '<div class="empty-state"><div class="empty-icon">🔗</div>' +
+                    "No links or references found in this file.</div>";
+                refsSection.style.display = "block";
+                return;
+            }
+
+            /* Group by type */
+            var groups = {};
+            var order  = ["external", "anchor", "mail", "image"];
+            for (var i = 0; i < refs.length; i++) {
+                var t = refs[i].type;
+                if (!groups[t]) groups[t] = [];
+                groups[t].push(refs[i]);
+            }
+
+            var html = "";
+            for (var g = 0; g < order.length; g++) {
+                var key   = order[g];
+                var items = groups[key];
+                if (!items || items.length === 0) continue;
+
+                html += '<div class="ref-category">' + refTypeName(key) +
+                        " (" + items.length + ")</div>";
+
+                for (var j = 0; j < items.length; j++) {
+                    var r       = items[j];
+                    var href    = r.type === "anchor" ? "javascript:void(0)" : r.url;
+                    var target  = r.type === "external" ? ' target="_blank" rel="noopener"' : "";
+
+                    html += '<a class="ref-item" href="' + escapeHTML(href) + '"' + target + ">" +
+                            refIcon(r.type) +
+                            '<div class="ref-body">' +
+                            '<div class="ref-title">' + escapeHTML(r.text) + "</div>" +
+                            '<div class="ref-url">'   + escapeHTML(r.url)  + "</div>" +
+                            "</div>" +
+                            '<span class="ref-type-badge">' +
+                            (r.domain ? escapeHTML(r.domain) : refTypeName(r.type)) +
+                            "</span></a>";
+                }
+            }
+
+            refList.innerHTML = html;
+            refsSection.style.display = "block";
+        }
+
+
+        /* ══════════════════════════════════════════════════════
+           🆕 QUERIES / OPEN QUESTIONS — extraction + rendering
+        ══════════════════════════════════════════════════════ */
+
+        /**
+         * Extract queries/open questions from raw Markdown text.
+         * Sources:
+         *   1. Lines ending with ? (excluding code blocks)
+         *   2. Keyword lines: Q: / Question: / Query: / OPEN: / TBD: / PENDING: / DECISION:
+         *   3. Blockquote lines (>) ending with ?
+         * Also captures the nearest preceding heading as "context".
+         */
+        function extractQueries(rawText) {
+            var queries = [];
+            var lines   = rawText.split("\n");
+            var id      = 0;
+            var currentHeading = "General";
+            var inCodeBlock = false;
+            var seen = {};  /* deduplicate by trimmed text */
+
+            /* Regex for keyword-based queries */
+            var kwRe = /^\s*(?:>\s*)?\b(Q|Question|Query|QUERY|OPEN|TBD|PENDING|DECISION)\b[:\s]+(.+)/i;
+
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i];
+
+                /* Track code block fences to skip code content */
+                if (/^\s*```/.test(line)) {
+                    inCodeBlock = !inCodeBlock;
+                    continue;
+                }
+                if (inCodeBlock) continue;
+
+                /* Track current heading for context */
+                var headingMatch = line.match(/^(#{1,6})\s+(.+)/);
+                if (headingMatch) {
+                    currentHeading = headingMatch[2].trim();
+                    continue;
+                }
+
+                var trimmed = line.trim();
+                if (!trimmed || trimmed.length < 5) continue;  /* skip very short lines */
+
+                /* Check for keyword-based queries first */
+                var km = line.match(kwRe);
+                if (km) {
+                    var qText = km[2].trim();
+                    var qKey  = qText.toLowerCase();
+                    if (!seen[qKey]) {
+                        seen[qKey] = true;
+                        queries.push({
+                            id:      id++,
+                            text:    qText,
+                            source:  km[1].toUpperCase(),
+                            line:    i + 1,
+                            context: currentHeading
+                        });
+                    }
+                    continue;
+                }
+
+                /* Check for lines ending with ? */
+                if (trimmed.endsWith("?")) {
+                    /* Clean up blockquote markers and list markers */
+                    var cleanText = trimmed
+                        .replace(/^>+\s*/, "")        /* remove > prefix */
+                        .replace(/^[-*+]\s*/, "")      /* remove list bullet */
+                        .replace(/^\d+\.\s*/, "")      /* remove numbered list */
+                        .replace(/^\*\*|\*\*$/g, "")   /* remove bold markers */
+                        .trim();
+
+                    if (cleanText.length < 5) continue;  /* skip trivial */
+
+                    /* Skip if it looks like a code comment or URL */
+                    if (/^(\/\/|#!|\*)/.test(cleanText)) continue;
+                    if (/^https?:/.test(cleanText)) continue;
+
+                    var cKey = cleanText.toLowerCase();
+                    if (!seen[cKey]) {
+                        seen[cKey] = true;
+                        var source = /^>/.test(trimmed) ? "blockquote" : "question-mark";
+                        queries.push({
+                            id:      id++,
+                            text:    cleanText,
+                            source:  source,
+                            line:    i + 1,
+                            context: currentHeading
+                        });
+                    }
+                }
+            }
+            return queries;
+        }
+
+        /** Render query cards into the queries section */
+        function renderQueries(queries) {
+            queriesCountEl.textContent = queries.length;
+
+            if (queries.length === 0) {
+                queryList.innerHTML =
+                    '<div class="empty-state"><div class="empty-icon">❓</div>' +
+                    'No queries or open questions found in this file.<br>' +
+                    '<small>Lines ending with <code>?</code> or keywords like <code>Q:</code>, ' +
+                    '<code>TBD:</code>, <code>PENDING:</code> will appear here.</small></div>';
+                queriesSection.style.display = "block";
+                return;
+            }
+
+            var html = "";
+            for (var i = 0; i < queries.length; i++) {
+                var q = queries[i];
+                html += '<div class="query-item">' +
+                    '<div class="query-icon">?</div>' +
+                    '<div class="query-body">' +
+                    '<div class="query-text">' + escapeHTML(q.text) + '</div>' +
+                    '<div class="query-meta">' +
+                    '<span class="query-status-badge">⏳ Open</span>' +
+                    '<span class="query-source-tag">' + q.source + ' · L' + q.line + '</span>' +
+                    '<span class="query-context-tag">📑 ' + escapeHTML(q.context) + '</span>' +
+                    '</div></div></div>';
+            }
+
+            queryList.innerHTML = html;
+            queriesSection.style.display = "block";
+        }
+
+        /* ══════════════════════════════════════════════════════
+           FILE PROCESSING
+        ══════════════════════════════════════════════════════ */
+        function processFile(file) {
+            if (!file) {
+                fileNameDiv.textContent = "";
+                fileMetaDiv.textContent = "";
+                showStatus("⚠️ No file selected. Please choose a .md file.", "error");
+                return;
+            }
+            if (!isValidMarkdownFile(file.name)) {
+                fileNameDiv.textContent = "";
+                fileMetaDiv.textContent = "";
+                showStatus(
+                    '❌ Invalid file type: <strong>"' + file.name +
+                    '"</strong>. Please select a .md or .markdown file.', "error");
+                fileInput.value = "";
+                return;
+            }
+
+            fileNameDiv.textContent = "📄 " + file.name;
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var rawText = e.target.result;
+                currentRawText     = rawText;
+                currentRenderedHTML = convertMarkdownToHTML(rawText);
+
+                fileMetaDiv.textContent = formatSize(file.size) + " · " + readingTime(rawText);
+
+                /* Show rendered content */
+                showRendered();
+                viewToggle.classList.remove("hidden");
+
+                /* 🆕 Extract and render actions */
+                actionsData   = extractActions(rawText);
+                currentFilter = "all";
+                /* Reset filter tabs */
+                for (var i = 0; i < filterTabs.length; i++) {
+                    filterTabs[i].classList.remove("active");
+                }
+                document.getElementById("filter-all").classList.add("active");
+                renderActions();
+                actionsSection.style.display = "block";
+
+                /* 🆕 Extract and render references */
+                var refs = extractReferences(rawText);
+                renderReferences(refs);
+
+                /* 🆕 Extract and render queries / open questions */
+                var queries = extractQueries(rawText);
+                renderQueries(queries);
+
+                contentEl.scrollIntoView({ behavior: "smooth", block: "start" });
+            };
+
+            reader.onerror = function () {
+                showStatus("❌ Failed to read file. Error: " + reader.error.message, "error");
+            };
+            reader.readAsText(file, "UTF-8");
+        }
+
+        /* ── File input ──────────────────────────────────────── */
+        fileInput.addEventListener("change", function (e) { processFile(e.target.files[0]); });
+
+        /* ── Drag & Drop ─────────────────────────────────────── */
+        dropZone.addEventListener("dragover", function (e) { e.preventDefault(); dropZone.classList.add("drag-over"); });
+        dropZone.addEventListener("dragleave", function ()  { dropZone.classList.remove("drag-over"); });
+        dropZone.addEventListener("drop", function (e) {
+            e.preventDefault(); dropZone.classList.remove("drag-over");
+            processFile(e.dataTransfer.files[0]);
+        });
+        dropZone.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInput.click(); }
+        });
+
+        /* ══════════════════════════════════════════════════════
+           DARK MODE
+        ══════════════════════════════════════════════════════ */
+        function setTheme(t) {
+            document.documentElement.setAttribute("data-theme", t);
+            themeToggle.textContent = t === "dark" ? "☀️" : "🌙";
+            localStorage.setItem("md-renderer-theme", t);
+        }
+        (function initTheme() {
+            var s = localStorage.getItem("md-renderer-theme");
+            if (s) setTheme(s);
+            else if (window.matchMedia && window.matchMedia("(prefers-color-scheme:dark)").matches) setTheme("dark");
+        })();
+        themeToggle.addEventListener("click", function () {
+            setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
+        });
+
+        /* ══════════════════════════════════════════════════════
+           KEYBOARD SHORTCUTS
+        ══════════════════════════════════════════════════════ */
+        document.addEventListener("keydown", function (e) {
+            if (e.ctrlKey && !e.shiftKey && e.key === "o") { e.preventDefault(); fileInput.click(); }
+            if (e.ctrlKey && e.shiftKey && (e.key === "D" || e.key === "d")) { e.preventDefault(); themeToggle.click(); }
+        });
+
+        /* ══════════════════════════════════════════════════════
+           SCROLL-TO-TOP
+        ══════════════════════════════════════════════════════ */
+        window.addEventListener("scroll", function () {
+            scrollTopBtn.classList.toggle("visible", window.scrollY > 400);
+        });
+        scrollTopBtn.addEventListener("click", function () {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        /* ══════════════════════════════════════════════════════
+           CDN CHECK
+        ══════════════════════════════════════════════════════ */
+        if (typeof marked === "undefined" || typeof DOMPurify === "undefined") {
+            showStatus(
+                "⚠️ Required libraries failed to load. Check your internet connection and reload.<br>" +
+                "<small>Needs: marked.js + DOMPurify via CDN</small>", "error");
+        }
+
+    })();
+    </script>
+</body>
+</html>

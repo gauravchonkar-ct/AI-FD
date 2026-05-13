@@ -1,0 +1,71 @@
+══════════════════════════════════════════════════
+  SOUNDAR V — Professional Profile
+═══════════════════════════════════════════════════
+
+Name            : Soundar Venkatesan
+Designation     : Senior Technical Lead
+Department      : Engineering & Delivery
+Organization    : CitiusTech Healthcare Technology
+Location        : Chennai, Tamil Nadu, India
+Reporting To    : Gaurav Chonkar (AVP-II, Delivery Lead)
+
+───────────────────────────────────────────────────
+  SUMMARY
+───────────────────────────────────────────────────
+
+Senior Technical Lead with 12+ years of experience in
+full-stack development, cloud architecture, and data
+engineering within the US healthcare domain. Specializes
+in designing scalable ETL pipelines, FHIR-based
+interoperability solutions, and cloud-native applications
+on AWS and Azure.
+
+───────────────────────────────────────────────────
+  CORE COMPETENCIES
+───────────────────────────────────────────────────
+
+• Cloud Platforms     : AWS (Glue, Lambda, S3, Redshift),
+                        Azure (Data Factory, Synapse)
+• Programming         : Python, Java, TypeScript, SQL
+• Data Engineering    : Spark, Airflow, dbt, Kafka
+• Healthcare Standards: HL7 FHIR, CDA, EDI (837/835)
+• DevOps & CI/CD      : Terraform, GitHub Actions, Docker
+• Databases           : PostgreSQL, DynamoDB, Snowflake
+
+───────────────────────────────────────────────────
+  CURRENT ASSIGNMENTS
+───────────────────────────────────────────────────
+
+Account          : Radiology Partners
+Role             : Tech Lead – Data Platform
+Team Size        : 8 engineers
+Key Deliverables :
+  • Real-time radiology report ingestion pipeline
+  • Cloud cost optimization (target: 18% reduction)
+  • FHIR R4 API layer for downstream analytics
+
+───────────────────────────────────────────────────
+  CERTIFICATIONS
+───────────────────────────────────────────────────
+
+• AWS Solutions Architect – Associate (2024)
+• Google Cloud Professional Data Engineer (2023)
+• HL7 FHIR Fundamentals Certificate (2023)
+
+───────────────────────────────────────────────────
+  EDUCATION
+───────────────────────────────────────────────────
+
+• B.Tech – Computer Science, Anna University (2012)
+• M.S. (Part-time) – Data Science, BITS Pilani (2021)
+
+───────────────────────────────────────────────────
+  CONTACT
+───────────────────────────────────────────────────
+
+Email   : soundar.v@citiustech.com
+Teams   : @SoundarV
+Phone   : +91-98XXX-XXXXX
+
+═══════════════════════════════════════════════════
+  Last Updated: May 2026

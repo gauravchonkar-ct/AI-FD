@@ -1,0 +1,109 @@
+{
+  "version": "1.2.0",
+  "description": "Pull Request Workflow VSM - CitiusTech Engineering Process",
+  "createdBy": "Gaurav Chonkar",
+  "createdDate": "2024-01-15",
+  "steps": [
+    {
+      "id": "create_pr",
+      "name": "Create Pull Request",
+      "role": "Developer",
+      "type": "process",
+      "processTimeMins": 15,
+      "waitTimeMins": 0,
+      "reworkProbability": 0.0,
+      "next": ["code_review"]
+    },
+    {
+      "id": "code_review",
+      "name": "Code Review",
+      "role": "Senior Developer",
+      "type": "process",
+      "processTimeMins": 45,
+      "waitTimeMins": 480,
+      "reworkProbability": 0.3,
+      "next": ["review_complete", "changes_requested"]
+    },
+    {
+      "id": "changes_requested",
+      "name": "Address Review Comments",
+      "role": "Developer",
+      "type": "process",
+      "processTimeMins": 30,
+      "waitTimeMins": 120,
+      "reworkProbability": 0.1,
+      "next": ["code_review"]
+    },
+    {
+      "id": "review_complete",
+      "name": "Review Approved",
+      "role": "Senior Developer",
+      "type": "decision",
+      "processTimeMins": 5,
+      "waitTimeMins": 0,
+      "reworkProbability": 0.0,
+      "next": ["ci_cd"]
+    },
+    {
+      "id": "ci_cd",
+      "name": "CI/CD Pipeline",
+      "role": "DevOps Engineer",
+      "type": "process",
+      "processTimeMins": 20,
+      "waitTimeMins": 30,
+      "reworkProbability": 0.05,
+      "next": ["testing"]
+    },
+    {
+      "id": "testing",
+      "name": "Automated Testing",
+      "role": "QA Engineer",
+      "type": "process",
+      "processTimeMins": 60,
+      "waitTimeMins": 15,
+      "reworkProbability": 0.1,
+      "next": ["security_scan"]
+    },
+    {
+      "id": "security_scan",
+      "name": "Security Scan",
+      "role": "Security Engineer",
+      "type": "process",
+      "processTimeMins": 25,
+      "waitTimeMins": 10,
+      "reworkProbability": 0.02,
+      "next": ["approval"]
+    },
+    {
+      "id": "approval",
+      "name": "Final Approval",
+      "role": "Engineering Manager",
+      "type": "process",
+      "processTimeMins": 10,
+      "waitTimeMins": 240,
+      "reworkProbability": 0.0,
+      "next": ["merge"]
+    },
+    {
+      "id": "merge",
+      "name": "Merge to Main",
+      "role": "DevOps Engineer",
+      "type": "process",
+      "processTimeMins": 5,
+      "waitTimeMins": 0,
+      "reworkProbability": 0.0,
+      "next": []
+    }
+  ],
+  "metadata": {
+    "processOwner": "Engineering Leadership",
+    "lastUpdated": "2024-01-15",
+    "scope": "Pull Request workflow for feature development",
+    "assumptions": [
+      "All times are in minutes",
+      "Wait times represent average queue times",
+      "Rework probabilities based on historical data",
+      "3-month analysis period with 100 PRs/month"
+    ]
+  }
+}

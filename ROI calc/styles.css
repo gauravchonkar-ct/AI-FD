@@ -1,0 +1,215 @@
+/* ═══════════════════════════════════════════════════════════
+   AI Agent Cost & ROI Calculator — styles.css
+   Enterprise-grade responsive styling
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Reset & Base ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont,
+               sans-serif;
+  background: #f0f2f5; color: #1e293b; line-height: 1.55;
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+  color: #fff; padding: 1.2rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: .75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+  position: sticky; top: 0; z-index: 100;
+}
+header h1 { font-size: 1.35rem; font-weight: 700; letter-spacing: .3px; }
+header p  { font-size: .82rem; opacity: .78; max-width: 520px; }
+.header-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+
+/* ── Buttons ────────────────────────────────────────────── */
+.btn {
+  padding: .45rem 1rem; border: none; border-radius: 6px; cursor: pointer;
+  font-size: .8rem; font-weight: 600; transition: all .18s ease;
+  display: inline-flex; align-items: center; gap: .35rem;
+}
+.btn-outline {
+  background: transparent; color: #fff;
+  border: 1.5px solid rgba(255,255,255,.45);
+}
+.btn-outline:hover { background: rgba(255,255,255,.12); border-color: #fff; }
+.btn-success { background: #10b981; color: #fff; }
+.btn-success:hover { background: #059669; }
+
+/* ── Layout ─────────────────────────────────────────────── */
+.app {
+  display: flex; gap: 1.25rem; padding: 1.25rem 1.5rem;
+  align-items: flex-start;
+}
+.inputs-panel {
+  flex: 0 0 420px; max-height: calc(100vh - 80px);
+  overflow-y: auto; padding-right: .5rem;
+}
+.results-panel { flex: 1 1 0; min-width: 0; }
+
+/* Scrollbar */
+.inputs-panel::-webkit-scrollbar { width: 5px; }
+.inputs-panel::-webkit-scrollbar-thumb {
+  background: #94a3b8; border-radius: 4px;
+}
+
+/* ── Cards ──────────────────────────────────────────────── */
+.card {
+  background: #fff; border-radius: 10px; padding: 1.1rem 1.25rem;
+  margin-bottom: 1rem; box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  border: 1px solid #e2e8f0;
+}
+.card h2 {
+  font-size: .92rem; font-weight: 700; color: #0f172a;
+  margin-bottom: .85rem; padding-bottom: .45rem;
+  border-bottom: 2px solid #e2e8f0;
+  display: flex; align-items: center; gap: .4rem;
+}
+.card h2 .icon { font-size: 1.05rem; }
+
+/* ── Form Elements ──────────────────────────────────────── */
+.field { margin-bottom: .7rem; }
+.field label {
+  display: block; font-size: .78rem; font-weight: 600;
+  color: #475569; margin-bottom: .2rem;
+}
+.field input, .field select {
+  width: 100%; padding: .42rem .6rem; border: 1.5px solid #cbd5e1;
+  border-radius: 6px; font-size: .82rem; color: #1e293b;
+  background: #f8fafc; transition: border .15s;
+}
+.field input:focus, .field select:focus {
+  outline: none; border-color: #3b82f6; background: #fff;
+}
+.field input.error { border-color: #ef4444; background: #fef2f2; }
+.field .hint { font-size: .7rem; color: #94a3b8; margin-top: .15rem; }
+.field-row { display: flex; gap: .6rem; }
+.field-row .field { flex: 1; }
+
+.radio-group { display: flex; gap: 1rem; margin: .45rem 0; }
+.radio-group label {
+  font-size: .78rem; font-weight: 500; cursor: pointer;
+  display: flex; align-items: center; gap: .3rem; color: #334155;
+}
+
+/* ── Badges ─────────────────────────────────────────────── */
+.warning-badge {
+  display: inline-block; background: #fef3c7; color: #92400e;
+  font-size: .7rem; padding: .15rem .5rem; border-radius: 4px;
+  font-weight: 600; margin-left: .4rem;
+}
+.ok-badge {
+  display: inline-block; background: #d1fae5; color: #065f46;
+  font-size: .7rem; padding: .15rem .5rem; border-radius: 4px;
+  font-weight: 600; margin-left: .4rem;
+}
+
+/* ── Results Grid ───────────────────────────────────────── */
+.results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.result-card {
+  background: #fff; border-radius: 10px; padding: 1.1rem 1.25rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06); border: 1px solid #e2e8f0;
+}
+.result-card.autonomous { border-top: 3.5px solid #3b82f6; }
+.result-card.semi       { border-top: 3.5px solid #8b5cf6; }
+
+.result-card h3 {
+  font-size: .88rem; font-weight: 700; margin-bottom: .75rem;
+  display: flex; align-items: center; gap: .4rem;
+}
+.result-card h3 .dot {
+  width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+}
+.autonomous .dot { background: #3b82f6; }
+.semi .dot       { background: #8b5cf6; }
+
+/* ── Metrics ────────────────────────────────────────────── */
+.metric {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: .32rem 0; border-bottom: 1px dashed #f1f5f9;
+}
+.metric:last-child { border-bottom: none; }
+.metric .lbl { font-size: .78rem; color: #64748b; }
+.metric .val { font-size: .88rem; font-weight: 700; color: #0f172a; }
+.metric .val.green  { color: #059669; }
+.metric .val.red    { color: #dc2626; }
+.metric .val.blue   { color: #2563eb; }
+.metric .val.purple { color: #7c3aed; }
+
+.metric-highlight {
+  background: #f0f9ff; margin: .5rem -.5rem; padding: .55rem .5rem;
+  border-radius: 6px; border: 1px solid #bae6fd;
+}
+.metric-highlight .val { font-size: 1.05rem; }
+.metric-highlight-green {
+  background: #ecfdf5; margin: .3rem -.5rem; padding: .55rem .5rem;
+  border-radius: 6px; border: 1px solid #6ee7b7;
+}
+.metric-highlight-purple {
+  background: #f5f3ff; margin: .5rem -.5rem; padding: .55rem .5rem;
+  border-radius: 6px; border: 1px solid #c4b5fd;
+}
+
+/* ── Chart ──────────────────────────────────────────────── */
+.chart-container {
+  background: #fff; border-radius: 10px; padding: 1.1rem 1.25rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06); border: 1px solid #e2e8f0;
+  margin-top: 1rem;
+}
+.chart-container h3 {
+  font-size: .92rem; font-weight: 700; margin-bottom: .65rem;
+  color: #0f172a;
+}
+canvas { width: 100% !important; height: 280px !important; display: block; }
+
+/* ── Accordion ──────────────────────────────────────────── */
+.accordion { margin-top: 1rem; }
+.accordion summary {
+  cursor: pointer; font-size: .85rem; font-weight: 700; color: #334155;
+  padding: .65rem .85rem; background: #f8fafc;
+  border: 1px solid #e2e8f0; border-radius: 8px;
+  list-style: none; display: flex; align-items: center; gap: .4rem;
+}
+.accordion summary::-webkit-details-marker { display: none; }
+.accordion summary::before { content: '\25B8'; transition: transform .2s; }
+.accordion[open] summary::before { transform: rotate(90deg); }
+.accordion .acc-body {
+  padding: .85rem; font-size: .76rem; color: #475569; line-height: 1.7;
+  background: #fff; border: 1px solid #e2e8f0; border-top: none;
+  border-radius: 0 0 8px 8px; overflow-x: auto;
+}
+.formula-block {
+  background: #f1f5f9; padding: .6rem .75rem; border-radius: 6px;
+  font-family: 'Cascadia Code', 'Fira Code', monospace;
+  font-size: .74rem; margin: .4rem 0;
+  white-space: pre-wrap; word-break: break-all;
+  color: #1e293b; border-left: 3px solid #3b82f6;
+}
+
+/* ── Toast ──────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 1.5rem; right: 1.5rem;
+  background: #0f172a; color: #fff;
+  padding: .65rem 1.2rem; border-radius: 8px;
+  font-size: .8rem; font-weight: 600;
+  opacity: 0; transform: translateY(10px);
+  transition: all .3s; z-index: 999; pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .app { flex-direction: column; }
+  .inputs-panel {
+    flex: none; width: 100%; max-height: none;
+    overflow-y: visible; padding-right: 0;
+  }
+}
+@media (max-width: 680px) {
+  .results-grid { grid-template-columns: 1fr; }
+  header { padding: 1rem; }
+  .app { padding: 1rem; }
+}

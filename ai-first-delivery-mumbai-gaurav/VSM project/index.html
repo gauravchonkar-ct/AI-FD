@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIFD Team 2 VSM Analysis Tool - CitiusTech</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- CDN Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-content">
+            <h1 class="app-title">VSM Analysis Tool - Team 2</h1>
+            <p class="app-subtitle">Advanced Value Stream Mapping Analysis</p>
+        </div>
+        <div class="header-brand">
+            <span class="brand-text">CitiusTech</span>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <!-- File Upload Section -->
+        <section class="upload-section">
+            <div class="upload-card">
+                <h2>Upload VSM File</h2>
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📊</div>
+                    <p class="upload-text">Drag & drop your VSM file here or click to browse</p>
+                    <p class="upload-subtext">Supports .xlsx, .xls, .vsm and .json files</p>
+                    <input type="file" id="fileInput" accept=".xlsx,.xls,.vsm,.json" hidden>
+                </div>
+                <div class="upload-actions">
+                    <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                        Choose File
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Version Input (shown when needed) -->
+        <section class="version-section" id="versionSection" style="display: none;">
+            <div class="version-card">
+                <h3>File Version</h3>
+                <p>The uploaded VSM file doesn't contain version metadata. Please enter the version:</p>
+                <input type="text" id="versionInput" placeholder="e.g., v1.2.0" class="version-input">
+                <button class="btn btn-secondary" onclick="setVersionAndProceed()">Continue</button>
+            </div>
+        </section>
+
+        <!-- Analysis Results -->
+        <div class="results-container" id="resultsContainer" style="display: none;">
+            <!-- Flowchart Section -->
+            <section class="flowchart-section">
+                <div class="section-header">
+                    <h2>Process Flowchart</h2>
+                    <button class="btn btn-outline" onclick="downloadFlowchartPDF()">
+                        📄 Download Flowchart PDF
+                    </button>
+                </div>
+                <div class="process-flowchart-wrapper">
+                    <div class="process-legend">
+                        <div class="legend-title">Legend</div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #10B981;"></div>
+                            <span>VA - Value Added</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #F59E0B;"></div>
+                            <span>ENVA - Essential NVA</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #EF4444;"></div>
+                            <span>NVA - Non Value Added</span>
+                        </div>
+                    </div>
+                    <div class="process-flowchart-container">
+                        <svg id="processFlowchart" class="process-flow-svg"></svg>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analysis Chart -->
+            <section class="chart-section">
+                <div class="section-header">
+                    <h2>Step-by-Step Time Analysis</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="analysisChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Analysis Summary -->
+            <section class="analysis-section">
+                <div class="section-header">
+                    <h2>Analysis Summary (3-Month Scenario)</h2>
+                    <button class="btn btn-outline" onclick="downloadAnalysisPDF()">
+                        📄 Download Analysis PDF
+                    </button>
+                </div>
+
+                <!-- Key Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>Total PR Volume</h3>
+                        <div class="metric-value">300</div>
+                        <p class="metric-desc">100 PRs/month × 3 months</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Avg Lead Time per PR</h3>
+                        <div class="metric-value" id="leadTimeValue">--</div>
+                        <p class="metric-desc">Total process + wait time</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Value-Added Time per PR</h3>
+                        <div class="metric-value" id="valueAddedValue">--</div>
+                        <p class="metric-desc">Actual processing time</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Process Cycle Efficiency</h3>
+                        <div class="metric-value" id="pceValue">--%</div>
+                        <p class="metric-desc">VA time / Total lead time</p>
+                    </div>
+                </div>
+
+                <!-- Capacity Settings -->
+                <div class="capacity-settings">
+                    <h3>Capacity Modeling</h3>
+                    <div class="capacity-inputs">
+                        <label>
+                            Available hours per person per month:
+                            <input type="number" id="hoursPerMonth" value="160" min="1" max="240">
+                        </label>
+                        <label>
+                            People per role:
+                            <input type="number" id="peoplePerRole" value="3" min="1" max="20">
+                        </label>
+                        <button class="btn btn-secondary" onclick="recalculateAnalysis()">Recalculate</button>
+                    </div>
+                </div>
+
+                <!-- Bottlenecks Analysis -->
+                <div class="bottlenecks-section">
+                    <h3>Top Bottlenecks</h3>
+                    <div class="bottlenecks-tabs">
+                        <button class="tab-btn active" onclick="showBottleneckTab('wait')">By Wait Time</button>
+                        <button class="tab-btn" onclick="showBottleneckTab('utilization')">By Utilization</button>
+                    </div>
+                    <div id="bottlenecksContent"></div>
+                </div>
+
+                <!-- Role Utilization -->
+                <div class="utilization-section">
+                    <h3>Role Utilization</h3>
+                    <div id="utilizationChart"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Status Messages -->
+        <div class="status-container" id="statusContainer"></div>
+    </main>
+
+    <footer class="app-footer">
+        <div class="footer-left">
+            <span id="fileInfo">Version: -- | Creator: Gaurav Chonkar</span>
+        </div>
+        <div class="footer-right">
+            <span id="fileMetadata"></span>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

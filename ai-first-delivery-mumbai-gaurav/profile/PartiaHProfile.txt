@@ -1,0 +1,72 @@
+══════════════════════════════════════════════════
+  PARTIA H — Professional Profile
+═══════════════════════════════════════════════════
+
+Name            : Partia Hazarika
+Designation     : Lead Business Analyst
+Department      : Delivery & Client Engagement
+Organization    : CitiusTech Healthcare Technology
+Location        : Bengaluru, Karnataka, India
+Reporting To    : Gaurav Chonkar (AVP-II, Delivery Lead)
+
+───────────────────────────────────────────────────
+  SUMMARY
+───────────────────────────────────────────────────
+
+Lead Business Analyst with 9+ years of experience
+bridging clinical operations and technology delivery
+in the US healthcare payer and provider ecosystem.
+Skilled in requirements engineering, process mapping,
+stakeholder management, and Agile delivery governance.
+
+───────────────────────────────────────────────────
+  CORE COMPETENCIES
+───────────────────────────────────────────────────
+
+• Business Analysis   : User stories, BRDs, process flows
+• Healthcare Domains  : Revenue Cycle, Claims, Eligibility,
+                        Population Health, Quality Measures
+• Tools & Platforms   : Jira, Confluence, Miro, Power BI,
+                        Visio, Lucidchart
+• Standards           : HEDIS, CMS Star Ratings, NCQA,
+                        HL7 FHIR (functional)
+• Methodologies       : SAFe, Scrum, Lean Six Sigma (Green Belt)
+
+───────────────────────────────────────────────────
+  CURRENT ASSIGNMENTS
+───────────────────────────────────────────────────
+
+Account          : Arcadia Healthcare Solutions
+Role             : Lead BA – Analytics Platform
+Team Size        : 5 analysts
+Key Deliverables :
+  • Quality measure dashboard requirements (HEDIS MY2025)
+  • Data validation framework specification
+  • Client UAT coordination across 3 health plans
+
+───────────────────────────────────────────────────
+  CERTIFICATIONS
+───────────────────────────────────────────────────
+
+• CBAP – Certified Business Analysis Professional (2023)
+• SAFe 5.0 Product Owner / Product Manager (2022)
+• Lean Six Sigma Green Belt (2021)
+
+───────────────────────────────────────────────────
+  EDUCATION
+───────────────────────────────────────────────────
+
+• MBA – Healthcare Management, Symbiosis (2017)
+• B.Sc – Information Technology, Gauhati University (2014)
+
+───────────────────────────────────────────────────
+  CONTACT
+───────────────────────────────────────────────────
+
+Email   : partia.h@citiustech.com
+Teams   : @PartiaH
+Phone   : +91-97XXX-XXXXX
+
+═══════════════════════════════════════════════════
+  Last Updated: May 2026
+═══════════════════════════════════════════════════
