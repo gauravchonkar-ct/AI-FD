@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Cost Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #495057;
+            font-size: 0.9rem;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-group input[type="number"] {
+            font-family: 'Courier New', monospace;
+        }
+
+        .results {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        .results h2 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .iteration-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .iteration-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            backdrop-filter: blur(10px);
+        }
+
+        .iteration-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .iteration-card .value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+        }
+
+        .iteration-card .detail {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .totals {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .total-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 6px;
+            backdrop-filter: blur(10px);
+        }
+
+        .total-item label {
+            display: block;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .total-item .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+        }
+
+        .final-total {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .final-total label {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .final-total .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+        }
+
+        .currency-toggle {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .currency-toggle label {
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .final-total .value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Agent Cost Calculator</h1>
+            <p>Estimate total cost per unit of work for AI agents</p>
+        </header>
+
+        <div class="content">
+            <div class="currency-toggle" style="grid-column: 1 / -1;">
+                <label>Currency:</label>
+                <select id="currency" onchange="calculate()">
+                    <option value="₹">₹ (INR)</option>
+                    <option value="$">$ (USD)</option>
+                    <option value="€">€ (EUR)</option>
+                    <option value="£">£ (GBP)</option>
+                </select>
+            </div>
+
+            <div class="section">
+                <h2>Build Cost Inputs</h2>
+                <div class="input-group">
+                    <label>Engineer Cost</label>
+                    <input type="number" id="build-engineer" value="50000" step="100" oninput="calculate()">
+                </div>
+                <div class="input-group">
+                    <label>Infrastructure Cost</label>
+                    <input type="number" id="build-infrastructure" value="10000" step="100" oninput="calculate()">
+                </div>
+                <div class="input-group">
+                    <label>Token Cost (per token)</label>
+                    <input type="number" id="build-token" value="0.001" step="0.0001" oninput="calculate()">
+                </div>
+                <div class="input-group">
+                    <label>License Cost</label>
+                    <input type="number" id="build-license" value="5000" step="100" oninput="calculate()">
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Run Cost Inputs</h2>
+                <div class="input-group">
+                    <label>License Cost</label>
+                    <input type="number" id="run-license" value="3000" step="100" oninput="calculate()">
+                </div>
+                <div class="input-group">
+                    <label>Token Cost (per token)</label>
+                    <input type="number" id="run-token" value="0.0008" step="0.0001" oninput="calculate()">
+                </div>
+                <div class="input-group">
+                    <label>Infrastructure Cost</label>
+                    <input type="number" id="run-infrastructure" value="8000" step="100" oninput="calculate()">
+                </div>
+                <div class="input-group">
+                    <label>Maintenance Cost</label>
+                    <input type="number" id="run-maintenance" value="12000" step="100" oninput="calculate()">
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>HITL Cost Inputs</h2>
+                <div class="input-group">
+                    <label>HITL Cost per Iteration</label>
+                    <input type="number" id="hitl-cost" value="2000" step="100" oninput="calculate()">
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Token & Complexity Configuration</h2>
+                <div class="input-group">
+                    <label>Work Complexity</label>
+                    <select id="complexity" onchange="updateComplexity()">
+                        <option value="400">Simple</option>
+                        <option value="1000" selected>Medium</option>
+                        <option value="2000">Complex</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Baseline Tokens</label>
+                    <input type="number" id="baseline-tokens" value="1000" step="100" oninput="calculate()">
+                </div>
+            </div>
+
+            <div class="section" style="grid-column: 1 / -1;">
+                <h2>Iteration Sizing Configuration</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div class="input-group">
+                        <label>Iteration 1 Percentage (%)</label>
+                        <input type="number" id="iteration-1" value="30" min="0" max="100" step="1" oninput="calculate()">
+                    </div>
+                    <div class="input-group">
+                        <label>Iteration 2 Percentage (%)</label>
+                        <input type="number" id="iteration-2" value="60" min="0" max="100" step="1" oninput="calculate()">
+                    </div>
+                    <div class="input-group">
+                        <label>Iteration 3 Percentage (%)</label>
+                        <input type="number" id="iteration-3" value="30" min="0" max="100" step="1" oninput="calculate()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="results">
+                <h2>Cost Breakdown & Results</h2>
+
+                <div class="iteration-breakdown" id="iteration-breakdown">
+                </div>
+
+                <div class="totals">
+                    <div class="total-item">
+                        <label>Total Build Cost</label>
+                        <div class="value" id="total-build">0</div>
+                    </div>
+                    <div class="total-item">
+                        <label>Total Run Cost</label>
+                        <div class="value" id="total-run">0</div>
+                    </div>
+                    <div class="total-item">
+                        <label>Total HITL Cost</label>
+                        <div class="value" id="total-hitl">0</div>
+                    </div>
+                </div>
+
+                <div class="final-total">
+                    <label>Total Cost per Unit of Work</label>
+                    <div class="value" id="final-total">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateComplexity() {
+            const complexity = document.getElementById('complexity').value;
+            document.getElementById('baseline-tokens').value = complexity;
+            calculate();
+        }
+
+        function formatCurrency(value) {
+            const currency = document.getElementById('currency').value;
+            return currency + ' ' + value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function calculate() {
+            const buildEngineer = parseFloat(document.getElementById('build-engineer').value) || 0;
+            const buildInfrastructure = parseFloat(document.getElementById('build-infrastructure').value) || 0;
+            const buildTokenCost = parseFloat(document.getElementById('build-token').value) || 0;
+            const buildLicense = parseFloat(document.getElementById('build-license').value) || 0;
+
+            const runLicense = parseFloat(document.getElementById('run-license').value) || 0;
+            const runTokenCost = parseFloat(document.getElementById('run-token').value) || 0;
+            const runInfrastructure = parseFloat(document.getElementById('run-infrastructure').value) || 0;
+            const runMaintenance = parseFloat(document.getElementById('run-maintenance').value) || 0;
+
+            const hitlCost = parseFloat(document.getElementById('hitl-cost').value) || 0;
+
+            const baselineTokens = parseFloat(document.getElementById('baseline-tokens').value) || 0;
+
+            const iteration1Pct = parseFloat(document.getElementById('iteration-1').value) || 0;
+            const iteration2Pct = parseFloat(document.getElementById('iteration-2').value) || 0;
+            const iteration3Pct = parseFloat(document.getElementById('iteration-3').value) || 0;
+
+            const iterations = [
+                { name: 'Iteration 1', percentage: iteration1Pct },
+                { name: 'Iteration 2', percentage: iteration2Pct },
+                { name: 'Iteration 3', percentage: iteration3Pct }
+            ];
+
+            let totalBuildCost = 0;
+            let totalRunCost = 0;
+            let totalHitlCost = 0;
+
+            const iterationBreakdown = document.getElementById('iteration-breakdown');
+            iterationBreakdown.innerHTML = '';
+
+            iterations.forEach((iteration, index) => {
+                const tokensUsed = baselineTokens * (iteration.percentage / 100);
+
+                const iterBuildCost = buildEngineer + buildInfrastructure + (buildTokenCost * tokensUsed) + buildLicense;
+                const iterRunCost = runLicense + (runTokenCost * tokensUsed) + runInfrastructure + runMaintenance;
+                const iterHitlCost = hitlCost;
+
+                const iterTotalCost = iterBuildCost + iterRunCost + iterHitlCost;
+
+                totalBuildCost += iterBuildCost;
+                totalRunCost += iterRunCost;
+                totalHitlCost += iterHitlCost;
+
+                const card = document.createElement('div');
+                card.className = 'iteration-card';
+                card.innerHTML = `
+                    <h3>${iteration.name}</h3>
+                    <div class="value">${formatCurrency(iterTotalCost)}</div>
+                    <div class="detail">Tokens: ${tokensUsed.toFixed(0)} (${iteration.percentage}%)</div>
+                    <div class="detail">Build: ${formatCurrency(iterBuildCost)}</div>
+                    <div class="detail">Run: ${formatCurrency(iterRunCost)}</div>
+                    <div class="detail">HITL: ${formatCurrency(iterHitlCost)}</div>
+                `;
+                iterationBreakdown.appendChild(card);
+            });
+
+            document.getElementById('total-build').textContent = formatCurrency(totalBuildCost);
+            document.getElementById('total-run').textContent = formatCurrency(totalRunCost);
+            document.getElementById('total-hitl').textContent = formatCurrency(totalHitlCost);
+
+            const finalTotal = totalBuildCost + totalRunCost + totalHitlCost;
+            document.getElementById('final-total').textContent = formatCurrency(finalTotal);
+        }
+
+        calculate();
+    </script>
+</body>
+</html>

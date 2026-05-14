@@ -25,11 +25,11 @@
       profile: "profile/SoundarVProfile.txt",
       md:      "MD files/virtual-soundar assistant.md",
     },
-    partia: {
-      label:   "Partia H",
-      image:   "image/PartiaH.jpeg",
-      profile: "profile/PartiaHProfile.txt",
-      md:      "MD files/virtual-partita assistant.md",
+    parita: {
+      label:   "Parita H",
+      image:   "image/ParitaH.jpeg",
+      profile: "profile/ParitaHProfile.txt",
+      md:      "MD files/virtual-parita assistant.md",
     },
   };
 
@@ -205,86 +205,91 @@
    All user content is HTML-escaped BEFORE rendering to
    prevent XSS injection.
    ============================================================ */
+/* ============================================================
+   renderMarkdownLite(text) — v2.0
+   ============================================================
+   Added: HTML table passthrough, Markdown pipe-table parsing,
+   improved block-level handling.
+   ============================================================ */
 
 function renderMarkdownLite(text) {
   if (!text || typeof text !== "string") return "";
 
-  /* ----------------------------------------------------------
-     PASS 0: Normalise line endings
-     ---------------------------------------------------------- */
+  /* ── PASS 0: Normalise line endings ── */
   var src = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
-  /* ----------------------------------------------------------
-     PASS 1: Extract fenced code blocks BEFORE escaping
-     We replace them with placeholders, then restore after.
-     ---------------------------------------------------------- */
-  var codeBlocks = [];
+  /* ── PASS 1: Extract fenced code blocks ── */
+  var preservedBlocks = [];
 
   src = src.replace(/^```(\w*)\n([\s\S]*?)^```$/gm, function (_, lang, code) {
-    var index = codeBlocks.length;
+    var idx = preservedBlocks.length;
     var escaped = escapeForHtml(code.replace(/\n$/, ""));
     var langAttr = lang ? ' class="language-' + escapeForHtml(lang) + '"' : "";
-    codeBlocks.push(
-      "<pre><code" + langAttr + ">" + escaped + "</code></pre>"
-    );
-    return "\n%%CODEBLOCK_" + index + "%%\n";
+    preservedBlocks.push("<pre><code" + langAttr + ">" + escaped + "</code></pre>");
+    return "\n%%PRESERVED_" + idx + "%%\n";
   });
 
-  /* ----------------------------------------------------------
-     PASS 2: Escape HTML in the remaining source
-     ---------------------------------------------------------- */
-  src = escapeForHtml(src);
+  /* ── PASS 2: Extract HTML tables (preserve as-is) ── */
+  src = src.replace(/<table[\s\S]*?<\/table>/gi, function (match) {
+    var idx = preservedBlocks.length;
+    preservedBlocks.push(
+      '<div class="table-responsive">' + match + '</div>'
+    );
+    return "\n%%PRESERVED_" + idx + "%%\n";
+  });
 
-  /* ----------------------------------------------------------
-     PASS 3: Inline formatting (order matters)
-     ---------------------------------------------------------- */
-
-  // Images: !alt
+  /* ── PASS 3: Extract markdown pipe tables ── */
   src = src.replace(
-    /!\[([^\]]*)\]\(([^)]+)\)/g,
-    '<img src="$2" alt="$1" style="max-width:100%;border-radius:4px;" />'
+    /(^\|.+\|[ \t]*\n)(^\|[\s:|\-]+\|[ \t]*\n)((?:^\|.+\|[ \t]*\n?)*)/gm,
+    function (match, headerRow, separatorRow, bodyRows) {
+      var idx = preservedBlocks.length;
+      preservedBlocks.push(parsePipeTable(headerRow, separatorRow, bodyRows));
+      return "\n%%PRESERVED_" + idx + "%%\n";
+    }
   );
 
-  // Links: url  or  [text](url "title")
+  /* ── PASS 4: Escape remaining HTML ── */
+  src = escapeForHtml(src);
+
+  /* ── PASS 5: Inline formatting ── */
+
+  // Images
+  src = src.replace(
+    /!\[([^\]]*)\]\(([^)]+)\)/g,
+    '$2r-radius:4px;" />'
+  );
+
+  // Links
   src = src.replace(
     /\[([^\]]+)\]\(([^)\s]+)(?:\s+&quot;([^&]*)&quot;)?\)/g,
     function (_, linkText, url, title) {
       var titleAttr = title ? ' title="' + title + '"' : "";
-      return (
-        '<a href="' + url + '"' + titleAttr +
-        ' target="_blank" rel="noopener noreferrer">' +
-        linkText + "</a>"
-      );
+      return '<a href="' + url + '" target="_blank" rel="noopener noreferrer"' + titleAttr + ">" + linkText + "</a>";
     }
   );
 
-  // Bold + Italic: ***text*** or ___text___
+  // Bold + Italic
   src = src.replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>");
-  src = src.replace(/___(.+?)___/g,         "<strong><em>$1</em></strong>");
+  src = src.replace(/___(.+?)___/g, "<strong><em>$1</em></strong>");
 
-  // Bold: **text** or __text__
+  // Bold
   src = src.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-  src = src.replace(/__(.+?)__/g,     "<strong>$1</strong>");
+  src = src.replace(/__(.+?)__/g, "<strong>$1</strong>");
 
-  // Italic: *text* or _text_
+  // Italic
   src = src.replace(/\*(.+?)\*/g, "<em>$1</em>");
-  src = src.replace(
-    /\b_(.+?)_\b/g,
-    "<em>$1</em>"
-  );
+  src = src.replace(/\b_(.+?)_\b/g, "<em>$1</em>");
 
-  // Strikethrough: ~~text~~
+  // Strikethrough
   src = src.replace(/~~(.+?)~~/g, "<del>$1</del>");
 
-  // Inline code: `code`
+  // Inline code
   src = src.replace(/`([^`]+)`/g, "<code>$1</code>");
 
   // Trailing double-space → <br>
   src = src.replace(/ {2,}$/gm, "<br>");
 
-  /* ----------------------------------------------------------
-     PASS 4: Block-level elements (line by line)
-     ---------------------------------------------------------- */
+  /* ── PASS 6: Block-level elements ── */
   var lines  = src.split("\n");
   var output = [];
   var i      = 0;
@@ -292,16 +297,16 @@ function renderMarkdownLite(text) {
   while (i < lines.length) {
     var line = lines[i];
 
-    /* ---- Code block placeholder ---- */
-    var cbMatch = line.match(/^%%CODEBLOCK_(\d+)%%$/);
-    if (cbMatch) {
+    /* Preserved block placeholder */
+    var pbMatch = line.match(/^%%PRESERVED_(\d+)%%$/);
+    if (pbMatch) {
       closeParagraph(output);
-      output.push(codeBlocks[parseInt(cbMatch[1], 10)]);
+      output.push(preservedBlocks[parseInt(pbMatch[1], 10)]);
       i++;
       continue;
     }
 
-    /* ---- Horizontal rule ---- */
+    /* Horizontal rule */
     if (/^(\*{3,}|-{3,}|_{3,})$/.test(line.trim())) {
       closeParagraph(output);
       output.push("<hr>");
@@ -309,8 +314,8 @@ function renderMarkdownLite(text) {
       continue;
     }
 
-    /* ---- Headings: # to #### ---- */
-    var hMatch = line.match(/^(#{1,4})\s+(.+)$/);
+    /* Headings: # to ###### */
+    var hMatch = line.match(/^(#{1,6})\s+(.+)$/);
     if (hMatch) {
       closeParagraph(output);
       var level = hMatch[1].length;
@@ -319,7 +324,7 @@ function renderMarkdownLite(text) {
       continue;
     }
 
-    /* ---- Blockquote: > text ---- */
+    /* Blockquote */
     if (/^&gt;\s?/.test(line)) {
       closeParagraph(output);
       var bqLines = [];
@@ -331,28 +336,28 @@ function renderMarkdownLite(text) {
       continue;
     }
 
-    /* ---- Unordered list: - item or * item ---- */
+    /* Unordered list */
     if (/^(\s*)([-*])\s+/.test(line)) {
       closeParagraph(output);
       i = parseList(lines, i, output, "ul");
       continue;
     }
 
-    /* ---- Ordered list: 1. item ---- */
+    /* Ordered list */
     if (/^(\s*)\d+\.\s+/.test(line)) {
       closeParagraph(output);
       i = parseList(lines, i, output, "ol");
       continue;
     }
 
-    /* ---- Blank line: close paragraph ---- */
+    /* Blank line */
     if (line.trim() === "") {
       closeParagraph(output);
       i++;
       continue;
     }
 
-    /* ---- Default: paragraph text ---- */
+    /* Default: paragraph */
     if (!isInParagraph(output)) {
       output.push("%%P_OPEN%%");
     }
@@ -362,21 +367,145 @@ function renderMarkdownLite(text) {
 
   closeParagraph(output);
 
-  /* ----------------------------------------------------------
-     PASS 5: Join and finalise
-     ---------------------------------------------------------- */
+  /* ── PASS 7: Finalise ── */
   var html = output.join("\n");
-
-  // Convert paragraph markers to real tags
   html = html.replace(/%%P_OPEN%%\n?/g, "<p>");
-  html = html.replace(/%%P_CLOSE%%/g,   "</p>");
-
-  // Clean up empty paragraphs
+  html = html.replace(/%%P_CLOSE%%/g, "</p>");
   html = html.replace(/<p>\s*<\/p>/g, "");
 
   return html.trim();
 }
 
+
+/* ==============================================================
+   HELPER: Parse Markdown Pipe Tables
+   ============================================================== */
+function parsePipeTable(headerRow, separatorRow, bodyRows) {
+  var html = '<div class="table-responsive"><table>';
+
+  /* Parse alignment from separator row */
+  var separators = separatorRow.trim().split("|").filter(function (c) {
+    return c.trim() !== "";
+  });
+  var alignments = separators.map(function (sep) {
+    var s = sep.trim();
+    if (s.charAt(0) === ":" && s.charAt(s.length - 1) === ":") return "center";
+    if (s.charAt(s.length - 1) === ":") return "right";
+    return "left";
+  });
+
+  /* Header */
+  var headers = headerRow.trim().split("|").filter(function (c) {
+    return c.trim() !== "";
+  });
+  html += "<thead><tr>";
+  headers.forEach(function (cell, idx) {
+    var align = alignments[idx] || "left";
+    html += '<th style="text-align:' + align + '">' + cell.trim() + "</th>";
+  });
+  html += "</tr></thead>";
+
+  /* Body rows */
+  var rows = bodyRows.trim().split("\n").filter(function (r) {
+    return r.trim() !== "";
+  });
+  if (rows.length > 0) {
+    html += "<tbody>";
+    rows.forEach(function (row) {
+      var cells = row.trim().split("|").filter(function (c) {
+        return c.trim() !== "";
+      });
+      html += "<tr>";
+      cells.forEach(function (cell, idx) {
+        var align = alignments[idx] || "left";
+        html += '<td style="text-align:' + align + '">' + cell.trim() + "</td>";
+      });
+      html += "</tr>";
+    });
+    html += "</tbody>";
+  }
+
+  html += "</table></div>";
+  return html;
+}
+
+
+/* ==============================================================
+   HELPER: Parse nested lists
+   ============================================================== */
+function parseList(lines, startIndex, output, listType) {
+  var itemRegex =
+    listType === "ul"
+      ? /^(\s*)([-*])\s+(.*)/
+      : /^(\s*)\d+\.\s+(.*)/;
+
+  var firstMatch = lines[startIndex].match(itemRegex);
+  var baseIndent = firstMatch ? firstMatch[1].length : 0;
+
+  output.push("<" + listType + ">");
+  var i = startIndex;
+
+  while (i < lines.length) {
+    var line  = lines[i];
+    var match = line.match(itemRegex);
+
+    if (match) {
+      var indent = match[1].length;
+      if (indent > baseIndent) {
+        i = parseList(lines, i, output, listType);
+        continue;
+      } else if (indent < baseIndent) {
+        break;
+      }
+      var content = listType === "ul" ? match[3] : match[2];
+      output.push("<li>" + content + "</li>");
+      i++;
+    } else if (line.trim() === "") {
+      if (i + 1 < lines.length && itemRegex.test(lines[i + 1])) {
+        i++;
+        continue;
+      }
+      break;
+    } else {
+      break;
+    }
+  }
+
+  output.push("</" + listType + ">");
+  return i;
+}
+
+
+/* ==============================================================
+   HELPER: Paragraph state tracking
+   ============================================================== */
+function isInParagraph(output) {
+  for (var j = output.length - 1; j >= 0; j--) {
+    if (output[j] === "%%P_OPEN%%") return true;
+    if (output[j] === "%%P_CLOSE%%") return false;
+    if (output[j].charAt(0) === "<") return false;
+  }
+  return false;
+}
+
+function closeParagraph(output) {
+  if (isInParagraph(output)) {
+    output.push("%%P_CLOSE%%");
+  }
+}
+
+
+/* ==============================================================
+   HELPER: HTML-escape (XSS prevention)
+   ============================================================== */
+function escapeForHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
 /* ==============================================================
    HELPER: Parse nested lists (recursive-capable)
@@ -649,6 +778,7 @@ function loadImage(profileData) {
   }
 
   /* ---- 6b. Load Profile Text ---- */
+ /* ---- 6b. Load Profile Text ---- */
   async function loadProfile(profileData) {
     var container = dom.profileText;
     container.innerHTML = statusHTML("loading");
@@ -662,14 +792,114 @@ function loadImage(profileData) {
         return;
       }
 
-      // Render plain text preserving line breaks; escape HTML for safety
-      container.innerHTML = '<pre class="profile-pre">' + escapeHtml(text) + "</pre>";
+      container.innerHTML = renderProfileText(text);
     } catch (err) {
       console.error("[Profile]", err);
       container.innerHTML = statusHTML("error", err.message);
     }
   }
 
+  /**
+   * Parse structured profile .txt into styled HTML cards.
+   * Supports:
+   *   [SECTION] Title        → section header
+   *   Key     | Value        → key-value row
+   *   - Bullet text          → list item
+   *     • Sub-bullet text    → nested list item
+   *   Plain text             → paragraph
+   */
+function renderProfileText(text) {
+    var lines = text.split("\n");
+    var html  = "";
+    var inList = false;
+    var inSubList = false;
+    var sectionStarted = false;
+
+    lines.forEach(function (rawLine) {
+      var line = rawLine.trimEnd();
+
+      if (line.trim() === "") {
+        if (inSubList) { html += "</ul>"; inSubList = false; }
+        if (inList) { html += "</ul>"; inList = false; }
+        return;
+      }
+
+      /* ── [SECTION] Header ── */
+      var sectionMatch = line.match(/^\[SECTION\]\s*(.+)$/);
+      if (sectionMatch) {
+        if (inSubList) { html += "</ul>"; inSubList = false; }
+        if (inList) { html += "</ul>"; inList = false; }
+
+        /* ── ADD DIVIDER between sections ── */
+        if (sectionStarted) {
+          html += '<div class="profile-section-divider"></div>';
+        }
+        sectionStarted = true;
+
+        html += '<div class="profile-section-header">' +
+                  escapeForHtml(sectionMatch[1].trim()) +
+                '</div>';
+        return;
+      }
+
+      /* ── Key | Value row ── */
+      var kvMatch = line.match(/^([A-Za-z\s/&().]+?)\s*\|\s*(.+)$/);
+      if (kvMatch && !inList) {
+        if (inSubList) { html += "</ul>"; inSubList = false; }
+        if (inList) { html += "</ul>"; inList = false; }
+        html += '<div class="profile-kv-row">' +
+                  '<span class="profile-key">' + escapeForHtml(kvMatch[1].trim()) + ':</span>' +
+                  ' ' +
+                  '<span class="profile-value">' + escapeForHtml(kvMatch[2].trim()) + '</span>' +
+                '</div>';
+        return;
+      }
+
+      /* ── Sub-bullet: • or indented ── */
+      var subMatch = line.match(/^\s+[•·]\s+(.+)$/);
+      if (subMatch) {
+        if (!inSubList) {
+          html += '<ul class="profile-sublist">';
+          inSubList = true;
+        }
+        html += "<li>" + escapeForHtml(subMatch[1].trim()) + "</li>";
+        return;
+      }
+
+      /* ── Bullet: - text ── */
+      var bulletMatch = line.match(/^-\s+(.+)$/);
+      if (bulletMatch) {
+        if (inSubList) { html += "</ul>"; inSubList = false; }
+        if (!inList) {
+          html += '<ul class="profile-list">';
+          inList = true;
+        }
+        html += "<li>" + escapeForHtml(bulletMatch[1].trim()) + "</li>";
+        return;
+      }
+
+      /* ── Label line (e.g., "Deliverables:") ── */
+      var labelMatch = line.match(/^([A-Za-z\s]+):\s*$/);
+      if (labelMatch) {
+        if (inSubList) { html += "</ul>"; inSubList = false; }
+        if (inList) { html += "</ul>"; inList = false; }
+        html += '<div class="profile-label">' +
+                  escapeForHtml(labelMatch[1].trim()) + ':' +
+                '</div>';
+        return;
+      }
+
+      /* ── Plain text fallback ── */
+      if (inSubList) { html += "</ul>"; inSubList = false; }
+      if (inList) { html += "</ul>"; inList = false; }
+      html += '<p class="profile-text-line">' + escapeForHtml(line.trim()) + '</p>';
+    });
+
+    if (inSubList) html += "</ul>";
+    if (inList) html += "</ul>";
+
+    return '<div class="profile-formatted">' + html + '</div>';
+  }
   /* ---- 6c. Load & Parse Markdown ---- */
   async function loadMarkdown(profileData) {
     var NO_CONTENT    = '<p class="placeholder-text">📭 No content available for this section.</p>';

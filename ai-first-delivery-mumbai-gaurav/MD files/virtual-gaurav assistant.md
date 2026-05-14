@@ -1,12 +1,9 @@
 ---
-title: "AI-First Delivery Program – Comprehensive Training Notes"
-author: "Gaurav Chonkar"
-role: "AVP-II – Delivery Lead, CitiusTech"
-source: "CitiusTech AI-First Delivery Program – Mumbai Batch-5"
-date: "May 2026"
-version: "1.0"
-purpose: "Knowledge base for virtual personal assistant & post-training reference"
-tags:
+Title: "AI-First Delivery Program – Comprehensive Training Notes"
+Source: "CitiusTech AI-First Delivery Program – Mumbai Batch-5"
+Date: "May 2026"
+Purpose: "Knowledge base for virtual personal assistant & post-training reference"
+Tags:
   - GenAI
   - Delivery Management
   - Value Stream Mapping
@@ -22,7 +19,7 @@ tags:
 
 ---
 
-## a. 📝 My Notes
+## My Notes
 
 ---
 
@@ -458,7 +455,7 @@ Run Cost   = Licenses
 
 ---
 
-## b. 🔗 My Links & References
+## My Links References
 
 | # | Resource | URL | Why It Matters |
 |---|----------|-----|----------------|
@@ -479,7 +476,7 @@ Run Cost   = Licenses
 
 ---
 
-## c. 🤝 My Network (AACE Framework)
+## My Network  (AACE Framework)
 
 For each area of opportunity identified through Value Stream Mapping, you need a **network of SMEs** to draw upon. The training introduced the **AACE Framework** — a tiered model for building and maintaining your professional knowledge network.
 
@@ -533,7 +530,7 @@ For each area of opportunity identified through Value Stream Mapping, you need a
 
 ---
 
-## d. ✅ My Actions
+## My Actions
 
 ### Actions from Training Notes
 
@@ -561,7 +558,7 @@ For each area of opportunity identified through Value Stream Mapping, you need a
 
 ---
 
-## e. ❓ Open Questions
+## Open Questions
 
 ### Q1: How does an agent learn?
 
@@ -645,7 +642,8 @@ For each area of opportunity identified through Value Stream Mapping, you need a
 
 
 
-### My 4-3-3 ideas
+## My 433
+
 4 ideas which can help client's SDLC / Business outcomes :
 
 Idea 1 - In Radiology partners AI enabled forecasting can help improve scheduling for radiologists at specfic sites based on the modality specializations and past performance of the radiologist, exam volume during that time of the year, RVUs etc
@@ -657,6 +655,7 @@ Idea 3 - Introduce AIDLC to the new project oppurtunity of implementing Admin po
 Idea 4 - Create a Client/Arcadia SME Agent with context from confluence / JIRA and other training and knowledge material
 ----------------------------------------------------------------
 3 Ideas which can help the team :
+
 Idea 1 - Auto create MD files for existing legacy code or third party tools/APIs which can serve as a knowledge base for agents 
 
 Idea 2 - Procure fixed number of Copilot Studio licenses for all team for 3 months. Drive the team to create thier own automations using Power Automate etc + AI (if required) . Review automations and decide of whose licenses need to continue
@@ -666,6 +665,7 @@ Idea 3 - Convert client domain related trainings to Pod casts and evalutions in 
 -----------------------------------------------------------------
 
 3 Ideas to help me in my work :
+
 Idea 1 - Improved Margin forecasting and discrepancies. Use historical data of leave patterns, NHs, visa renewals information etc to better predict LE and margin imapct. Look at utilization patterns, unexplained margin drops etc to identify discrepancies
 
 Idea 2 - PTO Helper : Power Automate based flow which runs post PTO to help summarize important emails based on sender, prirotity tagging, personal tagging etc and after understanding the context from historical emails from the same sender/subject. Idenity emails which indicate pending approvals etc

@@ -1,37 +1,45 @@
-👤 Professional Profile
+[SECTION] About
+Name        | Gaurav Chonkar
 
-Name: Gaurav Chonkar
-Title: Assistant Vice President (AVP-II) – Delivery Lead at CitiusTech, a healthcare technology company
-Experience: 18+ years in technology leadership, delivery management, and program management within the US healthcare IT sector
-Office Location: CitiusTech SEZ3, Navi Mumbai, Maharashtra, India
-Manager: Narayanan MK | Skip Manager: Vaishali Nambiar
+Title       | Assistant Vice President (AVP-II) – Delivery Lead
 
+Company     | CitiusTech Healthcare Technology
 
-🏥 Delivery & Team Leadership
+Experience  | 18+ years in technology leadership, delivery management & program management (US Healthcare IT)
+Location    | CitiusTech SEZ3, Navi Mumbai, Maharashtra, India
+Manager     | Narayanan MK
+Skip Manager| Vaishali Nambiar
 
-You lead delivery for major US healthcare clients — Radiology Partners (~116 members) and Arcadia Healthcare (~38 members), managing a combined team of ~154 professionals across data engineering, radiology IT, and managed services.
-Direct team members include: Bhooshan Sapre, Swarup Dutta, Vikram Rajagopal, Mayuresh Mhatre
-You emphasize talent retention, team stability, and professional development.
+[SECTION] Delivery & Team Leadership
+- Lead delivery for 2 major US healthcare clients:
+  • Radiology Partners — ~116 team members
+  • Arcadia Healthcare — ~38 team members
+- Combined team: ~154 professionals across data engineering, radiology IT, managed services, interop/HL7, .NET/Java, QA, BA, PM, Scrum, DevOps
+- Direct reports: Bhooshan Sapre, Swarup Dutta, Vikram Rajagopal, Mayuresh Mhatre
+- Focus: talent retention, team stability, professional development
 
+[SECTION] Skills & Focus Areas
+- Cloud: AWS, Azure
+- Data Engineering: ETL, Spark, dbt, SQL, Python, QuickSight
+- Healthcare: HL7/Mirth interoperability, FHIR
+- DevOps: CI/CD, infrastructure automation
+- Process: governance, compliance (SOPs), operational hygiene, attrition control
+- Metrics: CSAT/PSAT customer experience tracking
+- AI/GenAI: Agentic AI adoption, GenAI use cases, Power Automate, AI workflows
 
-🔧 Skills & Focus Areas
+[SECTION] Certifications
+- Google Certified GenAI Leader
+- AWS Cloud Practitioner
+- AI certifications on Coursera & Udemy
 
-Strong in cloud technologies (AWS/Azure), data engineering, healthcare interoperability (HL7/Mirth), and DevOps practices
-Deep focus on process governance, compliance (SOPs), operational hygiene, attrition control, and customer experience metrics (CSAT/PSAT)
-Actively driving AI-led innovation — including Agentic AI adoption, GenAI use cases, and automation initiatives (Power Automate, AI workflows)
-Certifications: Google GenAI Leader, AWS Cloud Practitioner, and additional AI certifications on Coursera/Udemy
+[SECTION] Communication & Work Style
+- Prefers concise, professional, actionable communication
+- Expects clear metrics, dates, owners, and next steps
+- Favors bullet points, tables, and structured formats
+- Rapid iteration and back-and-forth engagement
+- Proactive about team recognition and client appreciation
 
-
-💬 Communication & Work Style
-
-You value concise, professional, and actionable communication with clear metrics, dates, owners, and next steps
-You prefer bullet points, tables, and structured formats for summaries and scorecards
-You appreciate rapid iteration and back-and-forth engagement, especially when troubleshooting technical issues or building automation flows
-You're proactive about team recognition — sharing client appreciation internally and encouraging kudos for high performers
-
-
-🎓 Personal Touches
-
-You're an engineering college alumnus who has returned as a guest speaker for award ceremonies, maintaining an ongoing relationship with your alma mater
-You enjoy a professional but approachable tone, with occasional humor — especially in congratulatory messages and introductions
-You're hands-on with Copilot/AI tools for productivity — reports, workflows, presentations, newsletters, and professional communications
+[SECTION] Personal
+- Engineering college alumnus; returned as guest speaker for award ceremonies
+- Professional but approachable tone with occasional humor
+- Hands-on with Copilot/AI tools for productivity
