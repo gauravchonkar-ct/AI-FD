@@ -510,11 +510,12 @@ For each area of opportunity identified through Value Stream Mapping, you need a
 
 | Name | Tier | Domain Expertise | Last Contact | Next Contact |
 |------|------|-----------------|-------------|-------------|
-| *[To be filled]* | Alpha | | | |
-| *[To be filled]* | Alpha | | | |
-| *[To be filled]* | Alpha | | | |
-| *[To be filled]* | Alpha | | | |
-| *[To be filled]* | Alpha | | | |
+| Santosh W | Alpha | Enterprise Support  | May 7 2026 | May 28 |
+| Jagadeesh C | Alpha | Cloud Engineering | May 4 2026 | May 18 |
+| Vinay R | Alpha | DevOps  | May 3 2026 | May 19 |
+| Gaurav S | Alpha | QA  | May 7 2026 | May 28 |
+| Deepesh S| Alpha | Cyber Security | May 7 2026 | May 28 |
+| Kanan M | Alpha | InterOp | May 7 2026 | May 28 |
 | *[To be filled]* | Charlie | | | |
 | *[To be filled]* | Charlie | | | |
 | *[To be filled]* | Charlie | | | |
