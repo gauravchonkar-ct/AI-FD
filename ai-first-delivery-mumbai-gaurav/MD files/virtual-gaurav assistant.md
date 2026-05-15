@@ -561,7 +561,7 @@ For each area of opportunity identified through Value Stream Mapping, you need a
 
 ## Open Questions
 
-### Q1: How does an agent learn?
+Q1: How does an agent learn?
 
 **Context:** Raised during the Day 1 discussion on building domain agents that require client data.
 
