@@ -451,9 +451,68 @@ Run Cost   = Licenses
 
 > 📌 **Rule of thumb:** Budget for 3× your estimated token cost in the first 3 months of production — the gap between demo and production is always larger than expected.
 
+
+
+### Day 3
+
+To improve productivity  in  existing process in SDLC we have improve we should the process faster. we can deliver more output provide the input - backlog exist
+
+If process cannot be changed , then we have to implement AI in SDLC . Review Each steps of the process to be evaluated for AI+Human , complete AI led or BI built automation or only humar or HTIL step.
+
+If process can be changed then - then we can implement AISDLC
+
+To measure productvity improvement with AI we need to sure the time taken by = Existing Steps with AI led time compression + Wait time + AI execution time + HTIL review time
+
+Question - How to validate the new user story estimate of AI enabled SDLC as a delivery manager? 
+Answer - There has to be an estimation guideline which identifies all dependancies . The guideline is specific to each market/account and project, consider processes level optimisations and each step level optimisations, what the dependacies at process and step level including external teams, licenses - subscription limits . It has to be refrred to the arhitecture team. Ask for assumptions 
+
+shifting constraints : AI led changes in efficiencies led to discovery of new constraints 
+
+Action - Create a estimation model for AI led optimisation
+Estimation guideline - document with the references
+estimatation model is a excel sheet -
+Example : create python based backend api
+
+
+
+UI level usuability requirements can be covered in specs given to prompt coach. Performance monitoring through tools can be included in specs for creating web pages - this should be a coding guideines for Ui developers
+
+3 types of agents in MS :
+1-copilot agent for endusers , No Code
+2-Studio agent for makers, Low Code
+3-Foundary agent for developers, Pro code
+------
+Memory is what enables agent to learn :
+prodecural memmory allows agent to self evaluate
+short and long term memory
+episodal memory 
+---
+Comparision of AI tools :
+Copilot is better with data related tasks
+Gemini is better with images and videos
+Claude is better with code
+
+AI led trasnformations :
+Level  1 : Human with 1 AI assistant
+Level 2 : Human leading multiple ai assitants
+Level 3 : team of Humans and Agents working together
+
+Instrcutions to create a new agent template :
+Goals
+Context
+Source
+Expectations
+
+Good prompt should have 7 layer prompt framework . Good prompt is IP . promp effectiveness is tied to LLM. so change in LLM will impact prompt consitency . So reevaluate prompts if client changes Model
+
+3 Rs of prompt effecttiness and agentic solution adding value :
+R - Repeatibility
+R - Reproducebility
+R - Reliablity 
 ---
 
----
+ACTION - Create a app on site Replit 
+
 
 ## My Links References
 
@@ -645,15 +704,17 @@ Q1: How does an agent learn?
 
 ## My 433
 
-4 ideas which can help client's SDLC / Business outcomes :
+4 Ideas to help me in my work :
 
-Idea 1 - In Radiology partners AI enabled forecasting can help improve scheduling for radiologists at specfic sites based on the modality specializations and past performance of the radiologist, exam volume during that time of the year, RVUs etc
+Idea 1 - Improved Margin forecasting and discrepancies. Use historical data of leave patterns, NHs, visa renewals information etc to better predict LE and margin imapct. Look at utilization patterns, unexplained margin drops etc to identify discrepancies
 
-Idea 2 - Leverage AI enabled automations for triaging of Citrix support related tickets
+Idea 2 - PTO Helper : Power Automate based flow which runs post PTO to help summarize important emails based on sender, prirotity tagging, personal tagging etc and after understanding the context from historical emails from the same sender/subject. Idenity emails which indicate pending approvals etc
 
-Idea 3 - Introduce AIDLC to the new project oppurtunity of implementing Admin portal for Mosiac OS platform
+Idea 3 - Client News letter : Power Automate based flow which looks for key updates related to the client or client's specfic business areas and creates a summary and porabable imapct on CT's current enagement 
 
-Idea 4 - Create a Client/Arcadia SME Agent with context from confluence / JIRA and other training and knowledge material
+Idea 4 - profile matched : Create a Ai enable utility in which i can I upload the JD and profile and it identifies and explains it the profile is matching with the JD
+
+ 
 ----------------------------------------------------------------
 3 Ideas which can help the team :
 
@@ -665,13 +726,13 @@ Idea 3 - Convert client domain related trainings to Pod casts and evalutions in 
 
 -----------------------------------------------------------------
 
-3 Ideas to help me in my work :
+3 ideas which can help client's SDLC / Business outcomes :
 
-Idea 1 - Improved Margin forecasting and discrepancies. Use historical data of leave patterns, NHs, visa renewals information etc to better predict LE and margin imapct. Look at utilization patterns, unexplained margin drops etc to identify discrepancies
+Idea 1 - In Radiology partners AI enabled forecasting can help improve scheduling for radiologists at specfic sites based on the modality specializations and past performance of the radiologist, exam volume during that time of the year, RVUs etc
 
-Idea 2 - PTO Helper : Power Automate based flow which runs post PTO to help summarize important emails based on sender, prirotity tagging, personal tagging etc and after understanding the context from historical emails from the same sender/subject. Idenity emails which indicate pending approvals etc
+Idea 2 - Leverage AI enabled automations for triaging of Citrix support related tickets
 
-Idea 3 - Client News letter : Power Automate based flow which looks for key updates related to the client or client's specfic business areas and creates a summary and porabable imapct on CT's current enagement 
+Idea 3 - Create a Client/Arcadia SME Agent with context from confluence / JIRA and other training and knowledge material
 
 
 
