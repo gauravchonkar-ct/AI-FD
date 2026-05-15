@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ValueStream Calculator – AI FD Team 2</title>
+  <style>
+    /* ── Design Tokens (mirrored from main app) ── */
+    :root {
+      --color-primary:       #1B3A5C;
+      --color-primary-light: #24507A;
+      --color-accent:        #0078D4;
+      --color-bg:            #F3F5F7;
+      --color-surface:       #FFFFFF;
+      --color-border:        #D1D9E0;
+      --color-text:          #1E293B;
+      --color-text-secondary:#64748B;
+      --color-text-inverse:  #FFFFFF;
+      --font-family:         'Segoe UI', system-ui, -apple-system,
+                             BlinkMacSystemFont, 'Helvetica Neue',
+                             Arial, sans-serif;
+      --radius-md:           8px;
+      --radius-lg:           12px;
+      --shadow-card:         0 2px 8px rgba(0,0,0,0.06),
+                             0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ── Page ── */
+    html, body {
+      height: 100%;
+      font-family: var(--font-family);
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    .calc-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      height: 56px;
+      padding: 0 1.5rem;
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+      color: var(--color-text-inverse);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+      flex-shrink: 0;
+    }
+
+    .calc-header-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .calc-header h1 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .calc-header .back-link {
+      margin-left: auto;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.25rem 0.75rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: var(--radius-md);
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .calc-header .back-link:hover {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+
+    .calc-header .back-link:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
+    /* ── Main Content ── */
+    .calc-main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .calc-card {
+      text-align: center;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 3rem 4rem;
+      max-width: 520px;
+      width: 100%;
+      animation: fadeUp 0.5s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .calc-card .icon {
+      font-size: 3.5rem;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .calc-card h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .calc-card .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-accent);
+      background: rgba(0,120,212,0.08);
+      border: 1px solid rgba(0,120,212,0.2);
+      border-radius: 999px;
+      padding: 0.25rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .calc-card p {
+      font-size: 0.9375rem;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+      margin-bottom: 0.5rem;
+    }
+
+    .calc-card .features {
+      text-align: left;
+      margin: 1.5rem auto 0;
+      max-width: 320px;
+      list-style: none;
+    }
+
+    .calc-card .features li {
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      padding: 0.4rem 0;
+      border-bottom: 1px solid #F0F2F4;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .calc-card .features li:last-child {
+      border-bottom: none;
+    }
+
+    .calc-card .features li .check {
+      color: var(--color-accent);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── Footer ── */
+    .calc-footer {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      color: var(--color-text-secondary);
+      border-top: 1px solid var(--color-border);
+      background: var(--color-surface);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .calc-card {
+        padding: 2rem 1.5rem;
+      }
+      .calc-card h2 {
+        font-size: 1.375rem;
+      }
+    }
+
+    /* ── Reduced Motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      .calc-card { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="calc-header">
+    <span class="calc-header-icon" aria-hidden="true">🧮</span>
+    <h1>ValueStream Calculator</h1>
+    index.html
+  </header>
+
+  <!-- Main -->
+  <main class="calc-main">
+    <div class="calc-card">
+      <div class="icon" aria-hidden="true">📐</div>
+      <h2>ValueStream Calculator</h2>
+      <span class="badge">🚧 Coming Soon</span>
+      <p>
+        We're building an interactive Value Stream Mapping calculator
+        to help you identify bottlenecks, measure lead &amp; cycle times,
+        and quantify process improvement opportunities.
+      </p>
+      <ul class="features">
+        <li><span class="check">✓</span> Lead time &amp; cycle time analysis</li>
+        <li><span class="check">✓</span> Process efficiency (%C/A) scoring</li>
+        <li><span class="check">✓</span> Wait time &amp; queue identification</li>
+        <li><span class="check">✓</span> ROI projection for improvements</li>
+        <li><span class="check">✓</span> Export to PDF / Excel</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="calc-footer">
+    AI FD – Team 2 &copy; 2026 CitiusTech &nbsp;|&nbsp; ValueStream Calculator v0.1-placeholder
+  </footer>
+
+</body>
+</html>

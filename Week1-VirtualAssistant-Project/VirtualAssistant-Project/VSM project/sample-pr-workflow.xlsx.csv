@@ -1,0 +1,9 @@
+Step,Input,Wait Time,Trigger,Processing Time,Risks,Role,Tools,SOP,Dependency,Approval Time,Value Stream Mapping/Cycle Time,Context & Reference,Rework Time,Quality Gate,Output,Change Notes
+Create Pull Request,Feature branch,0,Feature complete,15,Branch conflicts,Developer,Git/IDE,PR-SOP-001,Code ready,0,15,Create detailed PR description,2,Has tests,PR created,Standard process
+Code Review,PR submission,480,PR created,45,Requirements unclear,Senior Developer,GitHub/VS Code,CODE-REVIEW-SOP,PR creation,10,535,Peer review checklist,15,Approvals met,Review feedback,Check for style guide
+Address Comments,Review feedback,120,Comments received,30,Complexity issues,Developer,IDE,REVISION-SOP,Code review done,0,150,Update PR based on feedback,10,Tests pass,Updated PR,Iterate process
+CI/CD Pipeline,Code push,30,Branch merged,20,Build failures,DevOps Engineer,Jenkins/Docker,CI-CD-SOP,Tests approved,5,55,Automated deployment,3,Deployment successful,Build artifacts,Cloud deployment
+Automated Testing,Build artifacts,15,Build complete,60,Test failures,QA Engineer,Jest/Selenium,TEST-SOP,Build ready,0,75,Comprehensive test coverage,8,100% pass rate,Test report,Regression testing
+Security Scan,Code artifacts,10,Tests passed,25,Vulnerabilities found,Security Engineer,SonarQube/Snyk,SECURITY-SOP,Testing complete,0,35,OWASP compliance,2,No critical issues,Security report,CVE check
+Final Approval,Security report,240,Security approved,10,Regulatory concerns,Engineering Manager,Jira/Email,APPROVAL-SOP,Security done,0,250,Sign-off checklist,0,Approved,Approval document,Post-release check
+Merge to Main,Approved PR,0,Final approval,5,Merge conflicts,DevOps Engineer,Git,MERGE-SOP,Manager approval,0,5,Merge to production,0,Release live,Production code,Release notes

@@ -1,0 +1,50 @@
+👩‍💼 Professional Profile
+
+Name: Parita Haria
+Role: Sr. Engineering Manager / Associate Delivery Lead
+Organization: CitiusTech
+Location: STPI, Maharashtra (Mumbai)
+Reporting: 
+  Manager: Kedar Kelkar
+  Skip Manager: Siddharth Sheth
+
+🧭 Leadership & Responsibilities
+
+You manage multiple cross‑functional teams (6 teams, 40+ members) across Dev and QA.
+Strongly involved in delivery governance, stakeholder management, and client-facing leadership.
+Handle resource rotations, change management, escalations, and transparent client communication.
+Worked on T&M, SOWs and modernization initiatives.
+
+🧠 Technical & Domain Strengths
+
+Comfortable with advanced technical topics, including:
+ASP.Net, SQL, EF, LINQ
+Azure DevOps (YAML pipelines)
+Test automation (Playwright)
+
+Strong exposure to Healthcare IT domains:
+Revenue Cycle Management (RCM) - Claims, EDIs
+Provider data integration
+FHIR and healthcare data modernization
+
+🤖 AI & Innovation Focus
+
+Actively driving GenAI adoption in delivery:
+
+Claude Code, GitHub Copilot, Cursor
+AI-first delivery models
+Proficiency matrices, enablement plans, ROI tracking
+
+Regularly explore:
+
+Agentic AI use cases
+AI-driven productivity metrics
+
+
+🎓 Professional Development
+
+Completed / pursuing leadership and capability programs:
+Top Gun Program
+Fixed Price Project Management
+FLAME – Leadership Journey
+AI First Delivery Program certification

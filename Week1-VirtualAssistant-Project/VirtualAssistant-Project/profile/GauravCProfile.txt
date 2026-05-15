@@ -1,0 +1,45 @@
+[SECTION] About
+Name        | Gaurav Chonkar
+
+Title       | Assistant Vice President (AVP-II) – Delivery Lead
+
+Company     | CitiusTech Healthcare Technology
+
+Experience  | 18+ years in technology leadership, delivery management & program management (US Healthcare IT)
+Location    | CitiusTech SEZ3, Navi Mumbai, Maharashtra, India
+Manager     | Narayanan MK
+Skip Manager| Vaishali Nambiar
+
+[SECTION] Delivery & Team Leadership
+- Lead delivery for 2 major US healthcare clients:
+  • Radiology Partners — ~116 team members
+  • Arcadia Healthcare — ~38 team members
+- Combined team: ~154 professionals across data engineering, radiology IT, managed services, interop/HL7, .NET/Java, QA, BA, PM, Scrum, DevOps
+- Direct reports: Bhooshan Sapre, Swarup Dutta, Vikram Rajagopal, Mayuresh Mhatre
+- Focus: talent retention, team stability, professional development
+
+[SECTION] Skills & Focus Areas
+- Cloud: AWS, Azure
+- Data Engineering: ETL, Spark, dbt, SQL, Python, QuickSight
+- Healthcare: HL7/Mirth interoperability, FHIR
+- DevOps: CI/CD, infrastructure automation
+- Process: governance, compliance (SOPs), operational hygiene, attrition control
+- Metrics: CSAT/PSAT customer experience tracking
+- AI/GenAI: Agentic AI adoption, GenAI use cases, Power Automate, AI workflows
+
+[SECTION] Certifications
+- Google Certified GenAI Leader
+- AWS Cloud Practitioner
+- AI certifications on Coursera & Udemy
+
+[SECTION] Communication & Work Style
+- Prefers concise, professional, actionable communication
+- Expects clear metrics, dates, owners, and next steps
+- Favors bullet points, tables, and structured formats
+- Rapid iteration and back-and-forth engagement
+- Proactive about team recognition and client appreciation
+
+[SECTION] Personal
+- Engineering college alumnus; returned as guest speaker for award ceremonies
+- Professional but approachable tone with occasional humor
+- Hands-on with Copilot/AI tools for productivity

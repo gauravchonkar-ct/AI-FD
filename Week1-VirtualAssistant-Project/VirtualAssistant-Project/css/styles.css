@@ -1,0 +1,1229 @@
+/* ============================================================
+   AI FD – Team 2 | Enterprise Dashboard Stylesheet
+   ============================================================ */
+
+/* ---------- CSS CUSTOM PROPERTIES (Design Tokens) ---------- */
+:root {
+  /* — Brand Palette — */
+  --color-primary:        #1B3A5C;     /* Deep navy – header, accents     */
+  --color-primary-light:  #24507A;     /* Hover state for primary         */
+  --color-primary-dark:   #112840;     /* Active / pressed state          */
+  --color-accent:         #0078D4;     /* Microsoft-style accent blue     */
+  --color-accent-hover:   #106EBE;     /* Accent hover                    */
+
+  /* — Surfaces — */
+  --color-bg:             #F3F5F7;     /* Page background (cool grey)     */
+  --color-surface:        #FFFFFF;     /* Card / panel background         */
+  --color-surface-alt:    #F9FAFB;     /* Alternate surface (tab area)    */
+  --color-border:         #D1D9E0;     /* Subtle card borders             */
+  --color-border-light:   #E8ECF0;     /* Inner dividers                  */
+
+  /* — Text — */
+  --color-text:           #1E293B;     /* Primary body text               */
+  --color-text-secondary: #64748B;     /* Labels, captions, placeholders  */
+  --color-text-inverse:   #FFFFFF;     /* Text on dark backgrounds        */
+
+  /* — Feedback — */
+  --color-success:        #16A34A;
+  --color-warning:        #F59E0B;
+  --color-error:          #DC2626;
+
+  /* — Typography — */
+  --font-family:          'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont,
+                          'Helvetica Neue', Arial, sans-serif;
+  --font-mono:            'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+
+  --fs-xs:    0.75rem;    /* 12px */
+  --fs-sm:    0.8125rem;  /* 13px */
+  --fs-base:  0.875rem;   /* 14px – enterprise default */
+  --fs-md:    1rem;       /* 16px */
+  --fs-lg:    1.125rem;   /* 18px */
+  --fs-xl:    1.375rem;   /* 22px */
+
+  --fw-normal:  400;
+  --fw-medium:  500;
+  --fw-semi:    600;
+  --fw-bold:    700;
+
+  /* — Spacing Scale — */
+  --space-xs:   0.25rem;  /* 4px  */
+  --space-sm:   0.5rem;   /* 8px  */
+  --space-md:   0.75rem;  /* 12px */
+  --space-base: 1rem;     /* 16px */
+  --space-lg:   1.5rem;   /* 24px */
+  --space-xl:   2rem;     /* 32px */
+  --space-2xl:  3rem;     /* 48px */
+
+  /* — Layout — */
+  --header-height:   56px;
+  --footer-height:   44px;
+  --left-col-width:  300px;
+  --radius-sm:       4px;
+  --radius-md:       8px;
+  --radius-lg:       12px;
+  --shadow-card:     0 1px 3px rgba(0, 0, 0, 0.06),
+                     0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.08),
+                       0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-header:   0 1px 4px rgba(0, 0, 0, 0.12);
+  --transition:      0.2s ease;
+}
+
+
+/* ---------- RESET & BASE ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
+   PAGE-LEVEL: No scroll — full viewport lock
+   ============================================================ */
+html, body {
+  height: 100%;
+  overflow: hidden;                  /* ← Kill page-level scroll */
+}
+
+
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-normal);
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+
+/* ---------- UTILITY ---------- */
+.hidden {
+  display: none !important;
+}
+
+.placeholder-text {
+  color: var(--color-text-secondary);
+  font-style: italic;
+  font-size: var(--fs-sm);
+  text-align: center;
+  padding: var(--space-lg) var(--space-base);
+}
+
+
+/* ============================================================
+   HEADER BAR
+   ============================================================ */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+  padding: 0 var(--space-lg);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-header);
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.header-icon {
+  font-size: var(--fs-xl);
+  line-height: 1;
+}
+
+
+.header-logo {
+  height: 70px;   /* adjust based on your design */
+  width: auto;
+}
+
+.header-title {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semi);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* ---- Dropdown Panel (top-right) ---- */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.dropdown-label {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+}
+
+.dropdown-select {
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: var(--font-family);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs) var(--space-xl) var(--space-xs) var(--space-sm);
+  min-width: 220px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+
+  /* Custom caret */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M2.5 4.5L6 8l3.5-3.5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+.dropdown-select:hover {
+  border-color: var(--color-accent);
+}
+
+.dropdown-select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.25);
+}
+
+
+
+
+/* ============================================================
+   MAIN LAYOUT — fills available space between header & footer
+   ============================================================ */
+.app-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: var(--left-col-width) 1fr;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;                  /* ← Prevent main from scrolling */
+  min-height: 0;                     /* ← Allow grid children to shrink */
+}
+
+
+
+
+/* ============================================================
+   SHARED CARD STYLES
+   ============================================================ */
+.card,
+.center-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition);
+  overflow: hidden;
+}
+
+.card:hover,
+.center-panel:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.card-heading,
+.panel-heading {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semi);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-secondary);
+  padding: var(--space-md) var(--space-base);
+  border-bottom: 1px solid var(--color-border-light);
+  background: var(--color-surface-alt);
+}
+
+/* ---- Image Card ---- */
+.image-card {
+  flex-shrink: 0;
+}
+
+.image-card .image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm);            /* ← Reduced from space-lg */
+  min-height: 120px;                    /* ← Reduced from 180px   */
+  max-height: 200px;                    /* ← NEW: hard cap         */
+  background: var(--color-surface-alt);
+  overflow: hidden;                     /* ← NEW: safety clip      */
+}
+
+.image-card .image-wrapper img {
+  max-width: 80%;                       /* ← Reduced from 100%    */
+  max-height: 160px;                    /* ← Reduced from 220px   */
+  border-radius: var(--radius-md);
+  object-fit: contain;                  /* ← CHANGED from 'cover' */
+  border: 2px solid var(--color-border-light);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.image-card .image-wrapper img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================================
+   LEFT COLUMN — internal scroll for both cards
+   ============================================================ */
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  overflow-y: auto;                  /* ← Scroll if cards exceed height */
+  min-height: 0;
+}
+
+
+/* ---- Profile Card ---- */
+/* ---- Profile Card Content ---- */
+.profile-text-container {
+  padding: var(--space-base);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  max-height: 280px;               /* Fixed height — scroll kicks in */
+  overflow-y: auto;                 /* Internal scrollbar */
+  white-space: pre-wrap;            /* Preserves line breaks but WRAPS long lines */
+  word-wrap: break-word;            /* Break long words if needed */
+  overflow-wrap: break-word;        /* Modern equivalent */
+}
+
+.profile-text-container pre.profile-pre {
+  white-space: pre-wrap;            /* Override default <pre> no-wrap */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-family: var(--font-family);  /* Use body font, not monospace */
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Scrollbar styling */
+.profile-text-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.profile-text-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.profile-text-container::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+.profile-text-container::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary);
+}
+
+
+
+/* ============================================================
+   CENTER PANEL — MD content fixed height + internal scroll
+   ============================================================ */
+.center-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;                     /* ← Critical for flex shrink */
+  overflow: hidden;                  /* ← Panel itself doesn't scroll */
+}
+
+
+.md-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  background: var(--color-surface-alt);
+  border-bottom: 2px solid var(--color-border);
+  padding: 0 var(--space-sm);
+  flex-shrink: 0;                    /* ← Tabs never shrink */
+}
+
+.md-content-area {
+  flex: 1;                           /* ← Takes all remaining space */
+  overflow-y: auto;                  /* ← THIS is the internal scrollbar */
+  min-height: 0;                     /* ← Allows shrinking inside flex */
+  padding: 0;
+}
+
+.md-panel {
+  display: none;
+  padding: var(--space-base) var(--space-lg);
+  animation: fadeIn 0.25s ease;
+}
+
+.md-panel.active {
+  display: block;
+}
+
+
+.tab-btn {
+  font-family: var(--font-family);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: var(--space-md) var(--space-base);
+  cursor: pointer;
+  transition: color var(--transition),
+              border-color var(--transition),
+              background-color var(--transition);
+  white-space: nowrap;
+  margin-bottom: -2px;          /* Overlap parent border */
+}
+
+.tab-btn:hover {
+  color: var(--color-accent);
+  background: rgba(0, 120, 212, 0.04);
+}
+
+.tab-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.tab-btn.active {
+  color: var(--color-accent);
+  font-weight: var(--fw-semi);
+  border-bottom-color: var(--color-accent);
+  background: var(--color-surface);
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.md-panel .panel-heading {
+  background: transparent;
+  border-bottom: 1px solid var(--color-border-light);
+  padding: var(--space-sm) 0 var(--space-md) 0;
+  margin-bottom: var(--space-base);
+}
+
+/* ---- Markdown Rendered Content ---- */
+.md-body {
+  font-size: var(--fs-base);
+  line-height: 1.75;
+  color: var(--color-text);
+}
+
+.md-body h1, .md-body h2, .md-body h3,
+.md-body h4, .md-body h5, .md-body h6 {
+  color: var(--color-primary);
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+  font-weight: var(--fw-semi);
+  line-height: 1.3;
+}
+
+.md-body h1 { font-size: var(--fs-xl); }
+.md-body h2 { font-size: var(--fs-lg); border-bottom: 1px solid var(--color-border-light); padding-bottom: var(--space-xs); }
+.md-body h3 { font-size: var(--fs-md); }
+
+.md-body p {
+  margin-bottom: var(--space-base);
+}
+
+.md-body ul, .md-body ol {
+  margin: var(--space-sm) 0 var(--space-base) var(--space-lg);
+}
+
+.md-body li {
+  margin-bottom: var(--space-xs);
+}
+
+.md-body a {
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--transition);
+}
+
+.md-body a:hover {
+  border-bottom-color: var(--color-accent);
+}
+
+.md-body a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.md-body code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  padding: 1px 5px;
+}
+
+.md-body pre {
+  background: #1E293B;
+  color: #E2E8F0;
+  border-radius: var(--radius-md);
+  padding: var(--space-base);
+  overflow-x: auto;
+  margin: var(--space-base) 0;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+
+.md-body pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+.md-body blockquote {
+  border-left: 3px solid var(--color-accent);
+  margin: var(--space-base) 0;
+  padding: var(--space-sm) var(--space-base);
+  background: rgba(0, 120, 212, 0.04);
+  color: var(--color-text-secondary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.md-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-base) 0;
+  font-size: var(--fs-sm);
+}
+
+.md-body th, .md-body td {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.md-body th {
+  background: var(--color-surface-alt);
+  font-weight: var(--fw-semi);
+  color: var(--color-primary);
+}
+
+.md-body tr:nth-child(even) {
+  background: var(--color-surface-alt);
+}
+
+.md-body hr {
+  border: none;
+  border-top: 1px solid var(--color-border-light);
+  margin: var(--space-lg) 0;
+}
+
+/* Scrollbar for md-content-area */
+.md-content-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.md-content-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.md-content-area::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+.md-content-area::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary);
+}
+
+
+/* ============================================================
+   FOOTER / CALCULATOR STRIP
+   ============================================================ */
+.app-footer {
+  flex-shrink: 0;
+  height: var(--footer-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: 0 var(--space-lg);
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+}
+
+.footer-label {
+  font-weight: var(--fw-semi);
+  color: var(--color-text);
+}
+
+.footer-content a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: var(--fw-medium);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition), color var(--transition);
+}
+
+.footer-content a:hover {
+  background: rgba(0, 120, 212, 0.08);
+  color: var(--color-accent-hover);
+}
+
+.footer-content a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.footer-divider {
+  color: var(--color-border);
+  user-select: none;
+}
+
+.footer-meta {
+  margin-left: auto;
+  font-size: var(--fs-xs);
+  color: var(--color-text-secondary);
+}
+
+
+/* ============================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* ---- Tablet (≤ 1024px): Narrower left column ---- */
+@media (max-width: 1024px) {
+  :root {
+    --left-col-width: 260px;
+  }
+
+  .app-main {
+    gap: var(--space-base);
+    padding: var(--space-base);
+  }
+
+  .tab-btn {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--fs-xs);
+  }
+}
+
+/* ---- Mobile (≤ 768px): Single-column stack ---- */
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    height: auto;
+    padding: var(--space-md) var(--space-base);
+    gap: var(--space-sm);
+    text-align: center;
+  }
+
+  .header-left {
+    justify-content: center;
+  }
+
+  .header-right {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dropdown-select {
+    min-width: 0;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .app-main {
+    grid-template-columns: 1fr;
+    gap: var(--space-base);
+    padding: var(--space-base);
+  }
+
+  .left-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-base);
+  }
+
+
+
+  .profile-text-container {
+    max-height: 240px;
+  }
+
+  .md-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .md-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .footer-content {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-xs);
+    text-align: center;
+  }
+
+  .footer-meta {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+/* ---- Small phone (≤ 480px): Full stack ---- */
+@media (max-width: 480px) {
+  .left-column {
+    grid-template-columns: 1fr;
+  }
+
+  .tab-btn {
+    padding: var(--space-sm);
+    font-size: var(--fs-xs);
+  }
+
+  .md-panel {
+    padding: var(--space-base);
+  }
+}
+
+
+/* ============================================================
+   ACCESSIBILITY: Reduced Motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* ============================================================
+   PRINT STYLES
+   ============================================================ */
+@media print {
+  .app-header,
+  .app-footer,
+  .md-tabs {
+    display: none;
+  }
+
+  .app-main {
+    display: block;
+  }
+
+  .md-panel {
+    display: block !important;
+    page-break-inside: avoid;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  /* ============================================================
+   SECTION TITLE BARS (consistent across all panels)
+   ============================================================ */
+/* ============================================================
+   SECTION TITLE BARS — Compact, single-line, icon + text
+   ============================================================ */
+.section-title-bar {
+  display: flex;
+  flex-direction: row;               /* ← Force horizontal layout */
+  align-items: center;               /* ← Vertically center icon + text */
+  gap: var(--space-xs);              /* ← Tight gap (4px) */
+  padding: var(--space-xs) var(--space-sm);  /* ← Reduced padding */
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-light) 100%
+  );
+  border-bottom: 1px solid var(--color-border);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  flex-shrink: 0;
+  min-height: 0;                     /* ← Remove any inherited min-height */
+}
+
+.section-title {
+  font-size: var(--fs-xs);           /* ← Reduced from fs-sm (12px) */
+  font-weight: var(--fw-semi);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-inverse);
+  margin: 0;
+  line-height: 1;                    /* ← Tight line height */
+  white-space: nowrap;               /* ← Prevent wrapping */
+}
+
+.section-title-icon {
+  font-size: var(--fs-sm);           /* ← Reduced from fs-md (13px) */
+  line-height: 1;
+  flex-shrink: 0;
+}
+/* ============================================================
+   FOOTER / CALCULATOR STRIP — Prominent Enterprise Style
+   ============================================================ */
+.app-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md) var(--space-lg);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-light) 100%
+  );
+  border-top: 2px solid var(--color-primary-dark);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-base);
+  font-size: var(--fs-sm);
+  color: rgba(255, 255, 255, 0.9);
+  width: 100%;
+  max-width: 1440px;
+  justify-content: center;
+}
+
+.footer-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.footer-section-label {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semi);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-inverse);
+}
+
+.footer-calc-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-weight: var(--fw-semi);
+  font-size: var(--fs-base);
+  padding: var(--space-xs) var(--space-base);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition), transform var(--transition);
+}
+
+.footer-calc-link:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+  text-decoration: none;
+  color: #FFFFFF;
+}
+
+.footer-calc-link:focus-visible {
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+.footer-divider {
+  color: rgba(255, 255, 255, 0.3);
+  user-select: none;
+}
+
+.footer-meta {
+  margin-left: auto;
+  font-size: var(--fs-xs);
+  color: rgba(255, 255, 255, 0.6);
+}
+/* ---- Override old .card-heading (no longer used) ---- */
+.card-heading {
+  display: none;
+}
+
+/* ============================================================
+   ACCESSIBILITY ENHANCEMENTS (WCAG 2.1 AA)
+   ============================================================ */
+
+/* ---- Skip Links (hidden until focused) ---- */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-base);
+  z-index: 9999;
+  padding: var(--space-sm) var(--space-base);
+  background: var(--color-accent);
+  color: #FFFFFF;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semi);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+/* ---- Screen Reader Only (visually hidden) ---- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Universal Focus Ring (all interactive elements) ---- */
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Dropdown Focus (enhanced) ---- */
+.dropdown-select:focus-visible {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.35);
+  outline: none;                             /* Custom ring via box-shadow */
+}
+
+/* ---- Tab Focus (keyboard navigation) ---- */
+.tab-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: rgba(0, 120, 212, 0.06);
+  z-index: 1;                                /* Lift above siblings */
+}
+
+/* ---- Tab Panel Focus (when tabbed into) ---- */
+.md-panel:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Card Focus (keyboard navigation) ---- */
+.card:focus-within {
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--color-accent);
+}
+
+/* ---- Footer Link Focus ---- */
+.footer-calc-link:focus-visible {
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ---- High Contrast Mode Support ---- */
+@media (forced-colors: active) {
+  .tab-btn.active {
+    border-bottom: 3px solid LinkText;
+  }
+
+  .skip-link:focus,
+  *:focus-visible {
+    outline: 2px solid LinkText;
+  }
+
+  .dropdown-select {
+    border: 1px solid ButtonText;
+  }
+}
+
+/* ============================================================
+   SECTION TITLE BARS — OVERRIDE FIX (bottom of file)
+   ============================================================ */
+.card .section-title-bar,
+.center-panel .section-title-bar,
+div.section-title-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 4px 10px !important;
+  background: linear-gradient(
+    135deg, #1B3A5C 0%, #24507A 100%
+  ) !important;
+  border-bottom: 1px solid #D1D9E0 !important;
+  border-radius: 8px 8px 0 0 !important;
+  flex-shrink: 0 !important;
+  min-height: 0 !important;
+}
+
+.card .section-title-bar .section-title,
+.center-panel .section-title-bar .section-title,
+div.section-title-bar .section-title,
+div.section-title-bar h2 {
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: #FFFFFF !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  display: inline !important;
+}
+
+.card .section-title-bar .section-title-icon,
+.center-panel .section-title-bar .section-title-icon,
+div.section-title-bar .section-title-icon {
+  font-size: 0.75rem !important;
+  line-height: 1 !important;
+  flex-shrink: 0 !important;
+  display: inline !important;
+}
+
+
+/* ============================================================
+   TABLE STYLES — Responsive, enterprise-grade
+   ============================================================ */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  margin: var(--space-base) 0;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.md-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  margin: 0;                              /* Remove margin — wrapper handles it */
+}
+
+.md-body th {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  font-weight: var(--fw-semi);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-primary-dark);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.md-body td {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border-light);
+  text-align: left;
+  vertical-align: top;
+  color: var(--color-text);
+}
+
+.md-body tr:nth-child(even) {
+  background: var(--color-surface-alt);
+}
+
+.md-body tr:nth-child(odd) {
+  background: var(--color-surface);
+}
+
+.md-body tr:hover {
+  background: rgba(0, 120, 212, 0.04);
+}
+
+/* Compact tables inside tabs */
+.md-panel .table-responsive {
+  font-size: var(--fs-sm);
+}
+
+/* ============================================================
+   PROFILE CARD — Formatted Sections
+   ============================================================ */
+/* ============================================================
+   PROFILE CARD — Simple Block Layout (no tables, no flex)
+   ============================================================ */
+.profile-text-container {
+  padding: 4px 6px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  min-height: 0;
+}
+
+.profile-formatted {
+  padding: 0;
+}
+
+/* ── Section Divider (line break between sections) ── */
+.profile-section-divider {
+  height: 1px;
+  background: #D1D9E0;
+  margin: 8px 0;
+}
+
+/* ── Section Headers ── */
+.profile-section-header {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #1B3A5C;
+  background-color: #EEF2F6;
+  border-left: 3px solid #0078D4;
+  padding: 3px 6px;
+  margin: 0 0 4px 0;
+  line-height: 1.3;
+}
+
+/* ── Key-Value Rows (simple block, not table) ── */
+.profile-kv-row {
+  display: block;
+  padding: 2px 6px;
+  font-size: 10px;
+  line-height: 1.4;
+  border-bottom: 1px solid #F5F5F5;
+}
+
+.profile-kv-row .profile-key {
+  font-weight: 700;
+  color: #64748B;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.profile-kv-row .profile-value {
+  color: #1E293B;
+  font-weight: 400;
+  font-size: 10px;
+}
+
+/* ── Bullet Lists ── */
+.profile-list {
+  list-style: none;
+  margin: 2px 0 2px 2px;
+  padding: 0;
+}
+
+.profile-list > li {
+  position: relative;
+  padding: 1px 0 1px 12px;
+  font-size: 10px;
+  line-height: 1.4;
+  color: #1E293B;
+}
+
+.profile-list > li::before {
+  content: "›";
+  position: absolute;
+  left: 1px;
+  color: #0078D4;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+/* ── Sub-bullet Lists ── */
+.profile-sublist {
+  list-style: none;
+  margin: 1px 0 3px 14px;
+  padding: 0;
+}
+
+.profile-sublist > li {
+  position: relative;
+  padding: 1px 0 1px 10px;
+  font-size: 10px;
+  line-height: 1.4;
+  color: #1E293B;
+}
+
+.profile-sublist > li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #0078D4;
+  font-size: 9px;
+}
+
+/* ── Label Lines ── */
+.profile-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 6px 0;
+}
+
+/* ── Plain Text ── */
+.profile-text-line {
+  font-size: 10px;
+  line-height: 1.4;
+  padding: 1px 6px;
+  color: #1E293B;
+  margin: 0;
+}
+
+/* ── Kill old pre rendering ── */
+.profile-text-container pre.profile-pre {
+  display: none;
+}
+
+}
