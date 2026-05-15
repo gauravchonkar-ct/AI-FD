@@ -1,71 +1,62 @@
-══════════════════════════════════════════════════
-  SOUNDAR V — Professional Profile
-═══════════════════════════════════════════════════
-
-Name            : Soundar Venkatesan
-Designation     : Senior Technical Lead
+Name            : Soundar Vetrivel
+Designation     : Associate Delivery Lead
 Department      : Engineering & Delivery
 Organization    : CitiusTech Healthcare Technology
-Location        : Chennai, Tamil Nadu, India
-Reporting To    : Gaurav Chonkar (AVP-II, Delivery Lead)
+Location        : Bangalore, Karnataka, India
+Reporting To    : Mukund (AVP-II, Practice Head)
 
 ───────────────────────────────────────────────────
   SUMMARY
 ───────────────────────────────────────────────────
 
-Senior Technical Lead with 12+ years of experience in
-full-stack development, cloud architecture, and data
-engineering within the US healthcare domain. Specializes
-in designing scalable ETL pipelines, FHIR-based
-interoperability solutions, and cloud-native applications
-on AWS and Azure.
+Senior Technical Lead with 18+ years of experience with deep expertise 
+in enterprise data platform modernization and analytics delivery.
+He is known for driving outcome‑focused execution, strong governance, 
+and translating complex engineering initiatives into clear business value.
 
 ───────────────────────────────────────────────────
   CORE COMPETENCIES
 ───────────────────────────────────────────────────
 
-• Cloud Platforms     : AWS (Glue, Lambda, S3, Redshift),
-                        Azure (Data Factory, Synapse)
-• Programming         : Python, Java, TypeScript, SQL
-• Data Engineering    : Spark, Airflow, dbt, Kafka
-• Healthcare Standards: HL7 FHIR, CDA, EDI (837/835)
-• DevOps & CI/CD      : Terraform, GitHub Actions, Docker
-• Databases           : PostgreSQL, DynamoDB, Snowflake
+• Cloud Platforms     : Azure (Data Factory, Synapse)
+• Programming         : Python, SQL
+• Data Engineering    : Spark, Airflow
+• Healthcare Standards: HL7, CDA, EDI (837/835)
+• Databases           : PostgreSQL, Snowflake
 
 ───────────────────────────────────────────────────
   CURRENT ASSIGNMENTS
 ───────────────────────────────────────────────────
 
-Account          : Radiology Partners
-Role             : Tech Lead – Data Platform
-Team Size        : 8 engineers
+Account          : Sound Physicians
+Role             : Project Manager
+Team Size        : 15 engineers
 Key Deliverables :
-  • Real-time radiology report ingestion pipeline
-  • Cloud cost optimization (target: 18% reduction)
-  • FHIR R4 API layer for downstream analytics
+  • Data platform on Snowflake with standardized data products
+  • Optimized Power BI reporting
 
 ───────────────────────────────────────────────────
   CERTIFICATIONS
 ───────────────────────────────────────────────────
 
-• AWS Solutions Architect – Associate (2024)
-• Google Cloud Professional Data Engineer (2023)
-• HL7 FHIR Fundamentals Certificate (2023)
+• SAFe 6 Practitioner, Year 2024 
+• AWS Certified Solutions Architect – Associate, Year 2022
+• PRINCE2 Agile Practitioner, Year 2021 
 
 ───────────────────────────────────────────────────
   EDUCATION
 ───────────────────────────────────────────────────
 
-• B.Tech – Computer Science, Anna University (2012)
-• M.S. (Part-time) – Data Science, BITS Pilani (2021)
+• M.Sc. – Psychology – University of Madras, India, Year 2009 
+• B.Tech. – Mechanical Engineering – Dr. MGR Educational & Research Institute, India, Year 2007 
 
 ───────────────────────────────────────────────────
   CONTACT
 ───────────────────────────────────────────────────
 
-Email   : soundar.v@citiustech.com
+Email   : soundar.vetrivel@citiustech.com
 Teams   : @SoundarV
-Phone   : +91-98XXX-XXXXX
+Phone   : +91-9840446867
 
 ═══════════════════════════════════════════════════
   Last Updated: May 2026
