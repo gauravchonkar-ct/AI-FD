@@ -1,0 +1,210 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Healthy Recipe Finder API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: recipes
+    description: Recipe operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /recipes:
+    get:
+      operationId: listRecipes
+      tags: [recipes]
+      summary: List and search recipes
+      description: Returns recipes filtered by ingredients, allergies, and dietary type
+      parameters:
+        - name: ingredients
+          in: query
+          description: Comma-separated list of available ingredients
+          schema:
+            type: string
+        - name: allergies
+          in: query
+          description: Comma-separated list of allergens to exclude
+          schema:
+            type: string
+        - name: dietaryType
+          in: query
+          description: Filter by dietary type (veg, non-veg, vegan, jain, kosher)
+          schema:
+            type: string
+        - name: category
+          in: query
+          description: Filter by meal category (breakfast, lunch, dinner, snack)
+          schema:
+            type: string
+        - name: sortBy
+          in: query
+          description: Sort field (name, calories, matchScore)
+          schema:
+            type: string
+        - name: sortOrder
+          in: query
+          description: Sort order (asc, desc)
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of recipes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecipeListResponse"
+
+  /recipes/{id}:
+    get:
+      operationId: getRecipe
+      tags: [recipes]
+      summary: Get recipe by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Recipe detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recipe"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /recipes/stats/summary:
+    get:
+      operationId: getRecipeStats
+      tags: [recipes]
+      summary: Get recipe statistics summary
+      responses:
+        "200":
+          description: Recipe stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecipeStats"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    Recipe:
+      type: object
+      required:
+        - id
+        - name
+        - category
+        - mealType
+        - ingredients
+        - allergens
+        - instructions
+        - servings
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+          description: breakfast, lunch, dinner, or snack
+        mealType:
+          type: string
+          description: veg, non-veg, vegan, jain, or kosher
+        ingredients:
+          type: array
+          items:
+            type: string
+        allergens:
+          type: array
+          items:
+            type: string
+        instructions:
+          type: string
+        servings:
+          type: string
+        calories:
+          type: ["integer", "null"]
+        protein:
+          type: ["string", "null"]
+        carbs:
+          type: ["string", "null"]
+        fat:
+          type: ["string", "null"]
+        prepTime:
+          type: ["string", "null"]
+        matchScore:
+          type: ["integer", "null"]
+          description: Percentage of available ingredients matched (0-100)
+        source:
+          type: ["string", "null"]
+
+    RecipeListResponse:
+      type: object
+      required:
+        - recipes
+        - total
+      properties:
+        recipes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Recipe"
+        total:
+          type: integer
+
+    RecipeStats:
+      type: object
+      required:
+        - totalRecipes
+        - byCategory
+        - byMealType
+      properties:
+        totalRecipes:
+          type: integer
+        byCategory:
+          type: object
+          additionalProperties:
+            type: integer
+        byMealType:
+          type: object
+          additionalProperties:
+            type: integer
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string

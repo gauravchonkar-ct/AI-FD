@@ -468,10 +468,10 @@ Answer - There has to be an estimation guideline which identifies all dependanci
 
 shifting constraints : AI led changes in efficiencies led to discovery of new constraints 
 
-Action - Create a estimation model for AI led optimisation
+Action - Create a estimation model for implementing AI led optimisation on a python based backend api to search for patient in patient database
 Estimation guideline - document with the references
-estimatation model is a excel sheet -
-Example : create python based backend api
+Estimatation model is a excel sheet -
+Example : 
 
 
 
@@ -511,8 +511,80 @@ R - Reproducebility
 R - Reliablity 
 ---
 
-ACTION - Create a app on site Replit 
+ACTION - Create a app on site Replit : Done
 
+
+---- 
+### Day 4
+Personal goals : 15 mins every day
+Dev / QA -> Build with AI (replit etc)
+QA -> Review with AI
+Tech lead / Arhitect -> Scale with AI
+Data Scientiest -> Build AI
+
+Professional goals : 45 mins every day
+Build Teams with AI ( help your team make the AI agents be more productive)-> delivery managers
+Govern outcomes with AI (Make AI more productive) -> delivery managers
+
+Ideal engineering hours is 6 hours per day as per software engineering institute. New coding is done only ofr ~1 hr. Making human more productive at coding is not effective
+
+Action : need to create a account specific playbook 
+
+Build Indivodual Asset :Example create a agent which can create playbooks. Create a knowledge system which can be use you as a person
+
+Steering - Guiding AI on how to do its activities.
+
+Frameworks - Allow humans to steer AI effecitevly ( Example BMAD, Superpowers, SDD, GST 2- GetShitDone, AWS - AIDLC ) The orchestrate the agents and human becomes an actor / participant in the workflow.
+
+Propose a joint ai nnovation council - invest is creating domain specific AI agent framework( example - Payor management AI agent framework ) so that these agents are custom to the projects so there are less clarifications/mistakes, faster and cost less tokens .
+
+Best AI agents and harnesses do the best context optimisation so that context window .
+
+LAst line of the prompt is more important than the first line
+
+If you use more than 40% of the context window then possibilities of Ai hallucinating is increase
+
+use AI to compress the context and use it later. it should be done towards end of 7+ exchanges . if you dont right output after 7 tries in AI then restart fresh with the previous context
+
+reference : Ai.engineer on youtube channel
+
+progressive disclousre using a MCP server and context engine are two ways to solve the challenges of managing context for a large enterprise 
+
+Question : How to overwrite existing context in a LLM ?
+
+Primary usecase for building agents : Reasoning and Concurrency (only useful when reasoning is correct)
+Reasoning needs to have below 3 things correct : 
+Information Retrival - getting the right information to the whole context is a non AI challnge 
+Specification - What you want as output
+GaurdRails / Control- What the agent is supposed to do and what not to do
+
+Use frameworks like NEMO to built gaurdrails framework
+
+Goverance in AI world in 3 tiers :
+1- Org level policies and instrcutions and COntrol : Control is to Have active endpoint monitoring of instructions/gaurdrail files
+2- Project level policies and instrcutions : Determinisstic hooks - execute code when triggers like changes in file / code happen . example check if secrets are present  in file. CLI based agents execute when CI/CD is triggered
+3- Person level policies and instrcutions: Have a org level agent which will review individual level agents periodically 
+
+Action : What are AI attack vectors ?
+
+Action : Problem - There are too many solutions . Create CEF - Common Engineering Framework BOT : Set of prompts /  workflows /contenxt / agents ( based on inductry, organization and client ). And here is a agent to search if there are too many answers. Only if there is no answer in CEF then reach out for help. This will help with reusuabilty / in-sourcing 
+
+Agnetic workflows are not deterministic so there is no process map
+
+Trustclaw resgiteratuion with personal email on phone
+
+ACTION : identify 5 utilities which a personal assitant can help do - 
+Review Plans, Proposals and Estimates
+Prepare for client stakeholders meetings
+Follow up with staffing and review / evaluate candidates
+Approvals for leaves,timesheets,IT requests, concur expenses
+Creating meetings notes and follow up on actions
+
+Action - create an app on claude code
+
+Action - Need to tweak agentic SDLC models like AIDLC, BMAD, Superpowers etc for customer specfic problem statements / use cases. Add customer context and domain knowledge
+
+-------------------------------------------------------------------------------------------
 
 ## My Links References
 
