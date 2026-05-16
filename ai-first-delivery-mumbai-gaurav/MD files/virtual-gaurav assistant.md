@@ -584,6 +584,16 @@ Action - create an app on claude code
 
 Action - Need to tweak agentic SDLC models like AIDLC, BMAD, Superpowers etc for customer specfic problem statements / use cases. Add customer context and domain knowledge
 
+
+Workshop result -
+PPT section :
+Executive summary - what is being presented
+submit 3 valuestream maps at task level for significant  oppurtunities ( dont recommend solution / agents)- could me multiple slides. Add time spend and value at each step
+make 1 handson agent - improve your own productivity 
+What capacbility will you build today v/s tomorrow (2027 needs)
+Maturiity model - how will you measure team's AI proficiency level ?
+30-60-90 day plans : for yourself / for your teams / for your customer 
+Help required
 -------------------------------------------------------------------------------------------
 
 ## My Links References
